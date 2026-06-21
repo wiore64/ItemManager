@@ -1,5 +1,0 @@
-name: ItemManager
-version: ${version}
-main: ru.vladimir.itemmanager.ItemManager
-description: A fascinating plugin!
-website: https://github.com/randomlychosenname/ItemManager
