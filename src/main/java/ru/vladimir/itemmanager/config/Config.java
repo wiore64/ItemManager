@@ -1,5 +1,9 @@
 package ru.vladimir.itemmanager.config;
 
-public record Config() {
-    
-}
+import java.util.logging.Level;
+
+import org.jetbrains.annotations.NotNull;
+
+public record Config(
+    @NotNull Level loggingLevel
+) {}

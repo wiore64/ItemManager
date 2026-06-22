@@ -8,7 +8,7 @@ import org.jetbrains.annotations.Nullable;
 
 import ru.vladimir.itemmanager.command.SubCommand;
 
-public class AddItemSubCommand implements SubCommand {
+public class ListItems implements SubCommand {
 
     @Override
     public void onCommand(@NotNull CommandSender sender, @NotNull String label, @NotNull String @NotNull [] args) {
