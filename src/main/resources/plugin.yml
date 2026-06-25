@@ -3,3 +3,40 @@ version: ${version}
 main: ru.vladimir.itemmanager.ItemManager
 description: A fascinating plugin!
 website: https://github.com/randomlychosenname/ItemManager
+
+permissions:
+  itemmanager.*:
+    description: Gives absolute access to all ItemManager commands and features.
+    default: op
+    children:
+      itemmanager.command: true
+
+  itemmanager.command:
+    description: Allows the use of the /itemmanager command.
+    default: op
+    children:
+      itemmanager.command.add: true
+      itemmanager.command.remove: true
+      itemmanager.command.give: true
+      itemmanager.command.list: true
+      itemmanager.command.reload: true
+
+  itemmanager.command.add:
+    description: Allows the use of the /itemmanager add command.
+    default: op
+
+  itemmanager.command.remove:
+    description: Allows the use of the /itemmanager remove command.
+    default: op
+
+  itemmanager.command.give:
+    description: Allows the use of the /itemmanager give command.
+    default: op
+
+  itemmanager.command.list:
+    description: Allows the use of the /itemmanager list command.
+    default: op
+
+  itemmanager.command.reload:
+    description: Allows the use of the /itemmanager reload command.
+    default: op

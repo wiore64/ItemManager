@@ -11,12 +11,12 @@ import ru.vladimir.itemmanager.command.SubCommand;
 public class GiveItem implements SubCommand {
 
     @Override
-    public void onCommand(@NotNull CommandSender sender, @NotNull String label, @NotNull String @NotNull [] args) {
+    public void onCommand(@NotNull CommandSender sender, @NotNull String @NotNull [] args) {
         
     }
 
     @Override
-    public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull String label, @NotNull String @NotNull [] args) {
+    public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull String @NotNull [] args) {
         return List.of();
     }
 }

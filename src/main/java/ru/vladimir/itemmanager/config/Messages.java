@@ -1,3 +1,9 @@
 package ru.vladimir.itemmanager.config;
 
-public record Messages() {}
+import org.jetbrains.annotations.NotNull;
+
+public record Messages(
+    @NotNull String noPermission,
+    @NotNull String description,
+    @NotNull String invalidSubCommand
+) {}

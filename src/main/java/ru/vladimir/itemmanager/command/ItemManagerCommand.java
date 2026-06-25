@@ -8,21 +8,61 @@ import org.bukkit.command.TabExecutor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import ru.vladimir.itemmanager.config.ConfigManager;
+import ru.vladimir.itemmanager.utils.Messager;
+
 public class ItemManagerCommand implements TabExecutor {
+    private static final String PRIMARY_PERMISSION = "itemmanager.command";
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String @NotNull [] args) {
-        // With the help of the service, dispatch to the appropriate sub command.
-        // Otherwise, handle it yourself. For example, a description message.
+        if (!sender.hasPermission(PRIMARY_PERMISSION)) {
+            Messager.sendMessage(sender, ConfigManager.getInstance().getMessages().noPermission());
+            return true;
+        }
+        
+        if (args.length == 0) {
+            Messager.sendMessage(sender, ConfigManager.getInstance().getMessages().description());
+            return true;
+        }
+
+        final var optionalWrapper = CommandService.getInstance().getWrapperForAlias(args[0]);
+
+        if (optionalWrapper.isEmpty()) {
+            Messager.sendMessage(sender, ConfigManager.getInstance().getMessages().invalidSubCommand());
+            return true;
+        }
+
+        final var wrapper = optionalWrapper.get();
+
+        if (!sender.hasPermission(wrapper.permission())) {
+            Messager.sendMessage(sender, ConfigManager.getInstance().getMessages().noPermission());
+            return true;
+        }
+
+        wrapper.command().onCommand(sender, args);
         
         return true;
     }
 
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String @NotNull [] args) {
-        // With the help of the service, dispatch to the appropriate sub command.
-        // Otherwise, return either List.of() or null, depending on the case.
+        if (!sender.hasPermission(PRIMARY_PERMISSION))
+            return List.of();
+
+        if (args.length == 0)
+            return List.of();
+
+        final var optionalWrapper = CommandService.getInstance().getWrapperForAlias(args[0]);
+
+        if (optionalWrapper.isEmpty())
+            return List.of();
+
+        final var wrapper = optionalWrapper.get();
+
+        if (!sender.hasPermission(wrapper.permission()))
+            return List.of();
         
-        return List.of();
+        return wrapper.command().onTabComplete(sender, args);
     }
 }
