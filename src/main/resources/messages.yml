@@ -9,12 +9,12 @@ player-only-command: "This command can only be used by players."
 
 must-hold-item: "You must be holding an item."
 item-already-registered: "Item {ITEM} is already registered." # Placeholders: {ITEM}
-item-not-found: "Item {ITEM} was not found." # Placeholders: {ITEM}
-player-not-found: "Player {PLAYER} was not found." # Placeholders: {PLAYER}
+item-not-found: "Item {ITEM} was not found."                  # Placeholders: {ITEM}
+player-not-found: "Player {PLAYER} was not found."            # Placeholders: {PLAYER}
 invalid-amount: "Invalid amount {AMOUNT}. Must be a positive integer." # Placeholders: {AMOUNT}
 
-item-registered: "Item {ITEM} registered." # Placeholders: {ITEM}
-item-unregistered: "Item {ITEM} unregistered." # Placeholders: {ITEM}
+item-registered: "Item {ITEM} registered."       # Placeholders: {ITEM}
+item-unregistered: "Item {ITEM} unregistered."   # Placeholders: {ITEM}
 item-given: "Gave {AMOUNT}x {ITEM} to {PLAYER}." # Placeholders: {AMOUNT}, {ITEM}, {PLAYER}
 
 plugin-description: "A powerful item management plugin."
