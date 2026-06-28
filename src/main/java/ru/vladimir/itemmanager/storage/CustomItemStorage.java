@@ -2,12 +2,14 @@ package ru.vladimir.itemmanager.storage;
 
 import java.io.File;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Unmodifiable;
 
 import ru.vladimir.itemmanager.ItemManager;
 
@@ -23,11 +25,11 @@ public final class CustomItemStorage {
         return Map.of();
     }
 
-    private void appendItemToUserStorage(String id, ItemStack item) {
+    private void appendItemToUserStorage(String itemId, ItemStack item) {
 
     }
 
-    private void removeItemFromUserStorage(String id) {
+    private void removeItemFromUserStorage(String itemId) {
 
     }
 
@@ -35,27 +37,33 @@ public final class CustomItemStorage {
 
     }
 
-    public boolean registerCustomItem(@NotNull String id, @NotNull ItemStack item) {
-        if (isCustomItem(id)) return false;
-        appendItemToUserStorage(id, item);
-        itemRegistry.put(id, item.serializeAsBytes());
+    public boolean registerCustomItem(@NotNull String itemId, @NotNull ItemStack item) {
+        if (isCustomItem(itemId)) return false;
+        appendItemToUserStorage(itemId, item);
+        itemRegistry.put(itemId, item.serializeAsBytes());
         writePluginStorage();
         return true;
     }
 
-    public boolean unregisterCustomItem(@NotNull String id) {
-        if (!isCustomItem(id)) return false;
-        removeItemFromUserStorage(id);
-        itemRegistry.remove(id);
+    public boolean unregisterCustomItem(@NotNull String itemId) {
+        if (!isCustomItem(itemId)) return false;
+        removeItemFromUserStorage(itemId);
+        itemRegistry.remove(itemId);
         writePluginStorage();
         return true;
     }
 
-    public boolean isCustomItem(@NotNull String id) {
-        return itemRegistry.containsKey(id);
+    public boolean isCustomItem(@NotNull String itemId) {
+        return itemRegistry.containsKey(itemId);
     }
 
-    public Set<String> getCustomItemIds() {
+    @NotNull Optional<ItemStack> getCustomItem(@NotNull String itemId) {
+        if (!isCustomItem(itemId)) return Optional.empty();
+
+        return Optional.ofNullable(ItemStack.deserializeBytes(itemRegistry.get(itemId)));
+    }
+
+    public @NotNull @Unmodifiable Set<String> getCustomItemIds() {
         return Set.copyOf(itemRegistry.keySet());
     }
 }

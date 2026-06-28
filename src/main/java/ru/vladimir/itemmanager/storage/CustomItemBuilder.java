@@ -4,7 +4,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
-import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
@@ -18,14 +17,13 @@ public final class CustomItemBuilder {
         this.itemCache = new ConcurrentHashMap<>();
     }
     
-    public @NotNull Optional<ItemStack> build(@NotNull String id) {
-        if (!itemStorage.isCustomItem(id))
+    public @NotNull Optional<ItemStack> build(@NotNull String itemId) {
+        if (!itemStorage.isCustomItem(itemId))
             return Optional.empty();
 
-        if (itemCache.containsKey(id))
-            return Optional.of(itemCache.get(id));
+        if (itemCache.containsKey(itemId))
+            return Optional.of(itemCache.get(itemId));
 
-        // Get item from the storage.
-        return Optional.of(ItemStack.of(Material.DIRT));
+        return itemStorage.getCustomItem(itemId);
     }
 }
