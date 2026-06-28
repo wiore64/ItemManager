@@ -1,5 +1,6 @@
 package ru.vladimir.itemmanager.storage;
 
+import java.time.Duration;
 import java.time.Instant;
 import java.util.Map;
 import java.util.Optional;
@@ -66,7 +67,7 @@ public final class CustomItemBuilder {
         }
 
         private boolean isExpired(Instant newestTimestamp) {
-            return (newestTimestamp.getEpochSecond() - timestamp.getEpochSecond()) > ITEM_CACHE_ENTRY_EXPIRE_IN;
+            return Duration.between(newestTimestamp, this.timestamp).toMillis() > ITEM_CACHE_ENTRY_EXPIRE_IN;
         }
     }
 }
