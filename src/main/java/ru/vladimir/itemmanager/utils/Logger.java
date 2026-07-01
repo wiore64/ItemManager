@@ -54,7 +54,7 @@ public final class Logger {
     }
 
     public static void destroy() {
-        if (instance != null) {
+        if (instance == null) {
             instance.warn(instance, "Not initialized.");
             return;
         }

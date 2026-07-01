@@ -44,9 +44,9 @@ public final class ItemManager extends JavaPlugin {
         command.setTabCompleter(commandHandler);
 
         if (UpdateChecker.isUpToDate(this.getPluginMeta().getVersion())) {
-            Logger.getInstance().warn(this, "A new version is available. Download it from here: %s".formatted(PLUGIN_DOWNLOAD_LINK));
-        } else {
             Logger.getInstance().info(this, "You're up to date!");
+        } else {
+            Logger.getInstance().warn(this, "A new version is available. Download it from here: %s".formatted(PLUGIN_DOWNLOAD_LINK));
         }
 
         Logger.getInstance().info(this, "Loaded successfully.");

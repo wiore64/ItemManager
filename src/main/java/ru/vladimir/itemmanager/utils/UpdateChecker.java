@@ -22,11 +22,13 @@ public final class UpdateChecker {
         final int currentVersion;
 
         try {
-           currentVersion = Integer.parseInt(currentVersionString);
+           currentVersion = Integer.parseInt(currentVersionString.replace(".", ""));
         } catch (NumberFormatException e) {
             Logger.getInstance().error(UpdateChecker.class, "Failed to parse current version: %s".formatted(currentVersionString));
-            return true;
+            return false;
         }
+
+        Logger.getInstance().info(UpdateChecker.class, "%d and %d".formatted(currentVersion, extractLatestVersion(release)));
 
         return currentVersion == extractLatestVersion(release);
     }
