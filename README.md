@@ -82,7 +82,7 @@ Instead, plugins can simply check for a specific key and respond accordingly.
 * Paper
 * Spigot (where supported)
 
-## Building
+## Installing
 
 1. Go to the latest release.
 2. Click to download the JAR.
