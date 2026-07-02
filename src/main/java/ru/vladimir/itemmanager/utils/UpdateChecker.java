@@ -28,8 +28,6 @@ public final class UpdateChecker {
             return false;
         }
 
-        Logger.getInstance().info(UpdateChecker.class, "%d and %d".formatted(currentVersion, extractLatestVersion(release)));
-
         return currentVersion == extractLatestVersion(release);
     }
 
