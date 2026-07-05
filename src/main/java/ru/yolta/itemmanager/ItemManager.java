@@ -13,7 +13,7 @@ import ru.yolta.itemmanager.storage.CustomItemStorage;
 import ru.yolta.itemmanager.utils.Logger;
 import ru.yolta.itemmanager.utils.UpdateChecker;
 
-public final class ItemManager extends JavaPlugin {
+public class ItemManager extends JavaPlugin {
 
     private static final String MAIN_COMMAND_NAME = "itemmanager";
     private static final String PLUGIN_DOWNLOAD_LINK = "https://hangar.papermc.io/randomlychosenname/ItemManager/versions";

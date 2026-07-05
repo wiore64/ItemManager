@@ -54,7 +54,10 @@ final class CustomItemDeserializer {
 
         meta.displayName(displayName);
         meta.lore(lore);
-        meta.setCustomModelData(customModelDataId);
+
+        if (customModelDataId != -1) {
+            meta.setCustomModelData(customModelDataId);
+        }
 
         for (final Map.Entry<Enchantment, Integer> entry : enchantments.entrySet()) {
             meta.addEnchant(entry.getKey(), entry.getValue(), true);

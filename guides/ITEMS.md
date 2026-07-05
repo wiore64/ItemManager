@@ -110,7 +110,7 @@ The item's model ID.
 model-id: -1
 ```
 
-Used for resource packs to define the item's custom model data. Optional field.
+Used for resource packs to define the item's custom model data. Optional field. -1 means none.
 
 ---
 

@@ -7,11 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.1.1] - 2026-08-04
 
+### Added
+
+- Added a first basic test.
+
 ### Changed
 
 - Links to the guide files were updated.
 - Update the project's artifact ID.
-- Added a folder for the future tests.
 
 ## [1.1.0] - 2026-07-04
 
