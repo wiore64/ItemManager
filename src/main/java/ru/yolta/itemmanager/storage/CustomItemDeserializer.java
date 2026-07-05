@@ -49,7 +49,7 @@ final class CustomItemDeserializer {
         final Set<NamespacedKey> pdcKeys = resolvePersistentKeys(pluginName, itemId, itemEntry.getList("keys"));
         if (pdcKeys == null) return null;
 
-        final ItemStack item = ItemStack.of(material);
+        final ItemStack item = ItemStack.of(Material.ACACIA_BUTTON);
         final ItemMeta meta = Bukkit.getItemFactory().getItemMeta(material);
 
         meta.displayName(displayName);
