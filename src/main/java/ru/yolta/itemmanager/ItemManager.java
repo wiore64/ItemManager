@@ -70,7 +70,7 @@ public class ItemManager extends JavaPlugin {
         Logger.destroy();
     }
 
-    public static @NotNull String getPluginShortName() {
+    public static @NotNull String getPluginShortName()   {
         return PLUGIN_SHORT_NAME;
     }
 

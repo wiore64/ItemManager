@@ -5,18 +5,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/2.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.1.1] - 2026-08-04
+## [1.1.1] - 2026-07-07
 
 ### Added
 
 - Added a first basic test.
 - Now all fields are optional except material.
 - Now if an attribute has no modifiers, the plugin will warn about it.
+- Added internal ids to track items regardless of their set item ids by admins.
 
 ### Changed
 
 - Links to the guide files were updated.
-- Update the project's artifact ID.
+- Updated the project's artifact ID.
+- Updated the update check link.
 
 ## [1.1.0] - 2026-07-04
 

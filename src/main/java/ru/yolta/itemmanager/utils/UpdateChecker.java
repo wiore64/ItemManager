@@ -10,7 +10,7 @@ import java.net.http.HttpResponse;
 
 public final class UpdateChecker {
 
-    private static final String GITHUB_API_URL = "https://api.github.com/repos/randomlychosenname/ItemManager/releases/latest";
+    private static final String GITHUB_API_URL = "https://api.github.com/repos/wiore64/ItemManager/releases/latest";
     private static final String TAG_NAME_KEY = "\"tag_name\":";
 
     private UpdateChecker() {}

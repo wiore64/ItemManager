@@ -1,26 +1,33 @@
 package ru.yolta.itemmanager.storage;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.Unmodifiable;
+
 import java.util.*;
 
 record CustomItemEntry(
-        String materialName,
-        String displayName,
-        List<String> lore,
-        int customModelDataId,
-        List<EnchantmentEntry> enchantmentEntries,
-        List<AttributeEntry> attributeEntries,
-        Set<String> keys
+        @NotNull UUID internalId,
+        @NotNull String materialName,
+        @Nullable String displayName,
+        @Nullable List<String> lore,
+        @Nullable Integer customModelDataId,
+        @Nullable List<EnchantmentEntry> enchantmentEntries,
+        @Nullable List<AttributeEntry> attributeEntries,
+        @Nullable Set<String> keys
 ) {
     CustomItemEntry(
-            String materialName,
-            String displayName,
-            List<String> lore,
-            int customModelDataId,
-            List<EnchantmentEntry> enchantmentEntries,
-            List<AttributeEntry> attributeEntries,
-            Set<String> keys
+            @NotNull UUID internalId,
+            @NotNull String materialName,
+            @Nullable String displayName,
+            @Nullable List<String> lore,
+            @Nullable Integer customModelDataId,
+            @Nullable List<EnchantmentEntry> enchantmentEntries,
+            @Nullable List<AttributeEntry> attributeEntries,
+            @Nullable Set<String> keys
     ) {
-        this.materialName = materialName.strip().toUpperCase(Locale.ROOT).replaceAll("\\s", "_");
+        this.internalId = internalId;
+        this.materialName = materialName.strip().replace(" ", "_").toUpperCase(Locale.ROOT);
         this.displayName = displayName;
         this.lore = lore;
         this.customModelDataId = customModelDataId;
@@ -30,6 +37,8 @@ record CustomItemEntry(
     }
 
     List<Map<String, ?>> enchantmentEntriesToMap() {
+        if (enchantmentEntries == null) return null;
+
         final List<Map<String, ?>> enchantments = new ArrayList<>();
 
         for (final EnchantmentEntry entry : enchantmentEntries) {
@@ -40,6 +49,8 @@ record CustomItemEntry(
     }
 
     List<Map<String, ?>> attributeEntriesToMap() {
+        if (attributeEntries == null) return null;
+
         final List<Map<String, ?>> attributes = new ArrayList<>();
 
         for (final AttributeEntry entry : attributeEntries) {
@@ -49,8 +60,10 @@ record CustomItemEntry(
         return List.copyOf(attributes);
     }
 
+    @NotNull @Unmodifiable
     Map<String, ?> toMap() {
         return Map.of(
+                "internal-id", internalId,
                 "material", materialName,
                 "display-name", displayName,
                 "lore", lore,
@@ -61,12 +74,13 @@ record CustomItemEntry(
         );
     }
 
-    record EnchantmentEntry(String name, int level) {
-        EnchantmentEntry(String name, int level) {
-            this.name = name.strip().toLowerCase(Locale.ROOT).replaceAll("\\s", "_");
+    record EnchantmentEntry(@NotNull String name, int level) {
+        EnchantmentEntry(@NotNull String name, int level) {
+            this.name = name.strip().replace(" ", "_").toLowerCase(Locale.ROOT);
             this.level = Math.clamp(level, 0, 255);
         }
 
+        @NotNull @Unmodifiable
         Map<String, ?> toMap() {
             return Map.of(
                     "name", name,
@@ -75,12 +89,13 @@ record CustomItemEntry(
         }
     }
 
-    record AttributeEntry(String name, List<AttributeModifierEntry> modifierEntries) {
-        AttributeEntry(String name, List<AttributeModifierEntry> modifierEntries) {
-            this.name = name.strip().toLowerCase(Locale.ROOT).replaceAll("\\s", "_");
+    record AttributeEntry(@NotNull String name, @NotNull List<AttributeModifierEntry> modifierEntries) {
+        AttributeEntry(@NotNull String name, @NotNull List<AttributeModifierEntry> modifierEntries) {
+            this.name = name.strip().replace(" ", "_").toLowerCase(Locale.ROOT);
             this.modifierEntries = modifierEntries;
         }
 
+        @NotNull @Unmodifiable
         Map<String, ?> toMap() {
             final List<Map<String, ?>> modifiers = new ArrayList<>();
 
@@ -95,13 +110,14 @@ record CustomItemEntry(
         }
     }
 
-    record AttributeModifierEntry(String operationName, double amount, String slotName) {
-        AttributeModifierEntry(String operationName, double amount, String slotName) {
-            this.operationName = operationName.strip().toUpperCase(Locale.ROOT).replaceAll("\\s", "");
-            this.amount = Math.clamp(amount, -1024, 60000000);
-            this.slotName = slotName.strip().toUpperCase(Locale.ROOT).replaceAll("\\s", "");
+    record AttributeModifierEntry(@NotNull String operationName, double amount, @Nullable String slotName) {
+        AttributeModifierEntry(@NotNull String operationName, double amount, @Nullable String slotName) {
+            this.operationName = operationName.replace(" ", "").toUpperCase(Locale.ROOT);
+            this.amount = amount;
+            this.slotName = slotName.replace(" ", "").toUpperCase(Locale.ROOT);
         }
 
+        @NotNull @Unmodifiable
         Map<String, ?> toMap() {
             return Map.of(
                     "operation", operationName,

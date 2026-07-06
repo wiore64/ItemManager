@@ -6,6 +6,7 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import org.bukkit.NamespacedKey;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -13,13 +14,13 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Unmodifiable;
 
-import net.kyori.adventure.text.minimessage.MiniMessage;
 import ru.yolta.itemmanager.ItemManager;
 import ru.yolta.itemmanager.utils.Logger;
 
 public final class CustomItemStorage {
 
-    private static final MiniMessage MINI_MESSAGE_PARSER = MiniMessage.miniMessage();
+    static final NamespacedKey ITEM_ISSUED_BY_CIM_NAMESPACEDKEY = new NamespacedKey(ItemManager.getPluginShortName().toLowerCase(Locale.ROOT), "item");
+    static final String ITEM_INTERNAL_ID_FOR_CIM_NAMESPACE = "cim_internal_id";
     private static final String FILE_STORAGE_NAME = "items.yml";
     private final ItemManager plugin;
     private final File configFile;
@@ -61,6 +62,8 @@ public final class CustomItemStorage {
 
             itemRegistry.put(itemId, parsedItemData);
         }
+
+        saveItemConfig(itemConfig);
 
         registryRefreshed();
     }

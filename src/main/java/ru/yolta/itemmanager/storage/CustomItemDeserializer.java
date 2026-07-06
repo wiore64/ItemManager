@@ -16,7 +16,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
-import ru.yolta.itemmanager.ItemManager;
 import ru.yolta.itemmanager.utils.Logger;
 
 import java.util.*;
@@ -25,12 +24,10 @@ final class CustomItemDeserializer {
 
     private static final String LOG_SOURCE = "CustomItemDeserializer";
     private static final MiniMessage MINI_MESSAGE = MiniMessage.miniMessage();
-    private static final NamespacedKey GENERAL_ITEM_KEY = new NamespacedKey(ItemManager.getPluginShortName().toLowerCase(Locale.ROOT), "item");
 
     private CustomItemDeserializer() {}
 
     static byte[] deserializeItem(String pluginName, String itemId, ConfigurationSection itemEntry) {
-
         final Material material = resolveMaterial(itemId, itemEntry.getString("material"));
         if (material == null) return null;
 
@@ -57,7 +54,13 @@ final class CustomItemDeserializer {
             container.set(key, PersistentDataType.BOOLEAN, true);
         }
 
+        for (final NamespacedKey key : resolveInternalKeys(itemId, itemEntry)) {
+            container.set(key, PersistentDataType.BOOLEAN, true);
+        }
+
         item.setItemMeta(meta);
+
+        Logger.getInstance().info("TEST", "Deserializing: %s".formatted(item));
 
         return item.serializeAsBytes();
     }
@@ -199,8 +202,8 @@ final class CustomItemDeserializer {
     private static Map<Attribute, List<AttributeModifier>> resolveAttributes(String itemId, List<?> rawAttributes) {
         if (rawAttributes == null) return Map.of();
 
-        final Map<Attribute, List<AttributeModifier>> attributes = new HashMap<>();
-        final Set<String> addedAttributeKeys = new HashSet<>();
+        final Map<Attribute, List<AttributeModifier>> attributes = new HashMap<>(rawAttributes.size());
+        final Set<String> addedAttributeKeys = new HashSet<>(rawAttributes.size());
 
         for (final Object obj : rawAttributes) {
             if (!(obj instanceof final Map<?, ?> rawAttribute)) {
@@ -262,7 +265,7 @@ final class CustomItemDeserializer {
                 continue;
             }
 
-            final List<AttributeModifier> modifiers = new ArrayList<>();
+            final List<AttributeModifier> modifiers = new ArrayList<>(rawModifiers.size());
 
             for (final Object mObj : rawModifiers) {
 
@@ -345,7 +348,7 @@ final class CustomItemDeserializer {
     private static Set<NamespacedKey> resolvePersistentKeys(String pluginName, String itemId, List<String> rawKeys) {
         if (rawKeys == null) return Set.of();
 
-        final Set<NamespacedKey> keys = new HashSet<>();
+        final Set<NamespacedKey> keys = new HashSet<>(rawKeys.size());
 
         for (final String rawKey : rawKeys) {
             final String[] rawKeyParts = rawKey
@@ -375,14 +378,38 @@ final class CustomItemDeserializer {
         return keys;
     }
 
-    private UUID resolveInternalId(String itemId, String value) {
-        if (value == null) {
-            Logger.getInstance().warn(LOG_SOURCE,
-                    "Failed to resolve internal ID of '%s': Not found. A new one will be generated. If you deleted it, please undo the action."
+    private static Set<NamespacedKey> resolveInternalKeys(String itemId, ConfigurationSection itemEntry) {
+        final Set<NamespacedKey> internalKeys = new HashSet<>(2);
+
+        internalKeys.add(CustomItemStorage.ITEM_ISSUED_BY_CIM_NAMESPACEDKEY);
+
+        final String internalId = itemEntry.getString("internal-id");
+
+        if (internalId == null) {
+            Logger.getInstance().debug(LOG_SOURCE,
+                    "Item '%s' missing internal key. Generating a new one...".formatted(itemId)
             );
-            return null;
+
+            final String newInternalId = UUID.randomUUID().toString();
+
+            itemEntry.set("internal-id", newInternalId);
+            internalKeys.add(new NamespacedKey(CustomItemStorage.ITEM_INTERNAL_ID_FOR_CIM_NAMESPACE, newInternalId));
+        } else {
+            try {
+                UUID.fromString(internalId);
+                internalKeys.add(new NamespacedKey(CustomItemStorage.ITEM_INTERNAL_ID_FOR_CIM_NAMESPACE, internalId));
+            } catch (IllegalArgumentException e) {
+                Logger.getInstance().debug(LOG_SOURCE,
+                        "Item '%s' missing internal key. Generating a new one...".formatted(itemId)
+                );
+
+                final String newInternalId = UUID.randomUUID().toString();
+
+                itemEntry.set("internal-id", newInternalId);
+                internalKeys.add(new NamespacedKey(CustomItemStorage.ITEM_INTERNAL_ID_FOR_CIM_NAMESPACE, newInternalId));
+            }
         }
 
-        return UUID.fromString(value);
+        return internalKeys;
     }
 }
