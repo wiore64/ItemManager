@@ -21,7 +21,7 @@ public final class ConfigManager {
     public ConfigManager(@NotNull CustomItemManager plugin) {
         Logger.getInstance().debug(this, "Initializing...");
 
-        this.generalConfig = parseGeneralConfig(getGeneralFileConfig(plugin));
+        this.generalConfig = parseGeneralConfig(new File(plugin.getDataFolder(), GENERAL_CONFIG_FILE_NAME), getGeneralFileConfig(plugin));
         this.messageConfig = parseMessageConfig(new File(plugin.getDataFolder(), MESSAGE_CONFIG_FILE_NAME), getMessageFileConfig(plugin));
 
         Logger.getInstance().debug(this, "Initialized successfully.");
@@ -36,6 +36,14 @@ public final class ConfigManager {
         }
 
         return YamlConfiguration.loadConfiguration(configFile);
+    }
+
+    private void saveGeneralFileConfig(File file, FileConfiguration fileConfig) {
+        try {
+            fileConfig.save(file);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private FileConfiguration getMessageFileConfig(CustomItemManager plugin) {
@@ -57,11 +65,36 @@ public final class ConfigManager {
         }
     }
 
-    private GeneralConfig parseGeneralConfig(FileConfiguration config) {
-        final String levelName = config.getString("logging-level");
+    private GeneralConfig parseGeneralConfig(File file, FileConfiguration config) {
+        int configVersion = config.getInt("config-version", -1);
+
+        if (configVersion == -1) {
+            Logger.getInstance().warn(ConfigManager.class, "Failed to parse config version: Not found or invalid version. It will be fixed for you.");
+            config.set("config-version", 1);
+            saveGeneralFileConfig(file, config);
+            configVersion = 1;
+        }
+
+        ConfigurationSection section = config.getConfigurationSection("settings");
+
+        boolean isSectionExist = true;
+
+        if (section == null) {
+            Logger.getInstance().warn(ConfigManager.class, "Failed to find the section for settings. A new one will be created.");
+            isSectionExist = false;
+            section = config.createSection("settings");
+        }
+
+        if (!isSectionExist) {
+            saveGeneralFileConfig(file, config);
+        }
+
+        final String levelName = section.getString("logging-level");
 
         if (levelName == null) {
             Logger.getInstance().warn(this, "Failed to parse logging level in '%s': Level not found.".formatted(GENERAL_CONFIG_FILE_NAME));
+            section.set("logging-level", "INFO");
+            saveGeneralFileConfig(file, config);
             return new GeneralConfig(Logger.LogLevel.INFO);
         }
 
@@ -77,53 +110,46 @@ public final class ConfigManager {
     private MessageConfig parseMessageConfig(File file, FileConfiguration fileConfig) {
         ConfigurationSection section = fileConfig.getConfigurationSection("messages");
 
-        boolean isSectionExists = true;
-
         if (section == null) {
-            Logger.getInstance().warn(ConfigManager.class, "Failed to find the section for messages. A new one will be created.");
-            isSectionExists = false;
+            Logger.getInstance().warn(ConfigManager.class, "Failed to find the section for messages. A new one will be created for you.");
             section = fileConfig.createSection("messages");
         }
 
         final var config = new MessageConfig(
-                getValueFromMessageConfig(fileConfig, "prefix", true),
-                getValueFromMessageConfig(section, "no-permission", !isSectionExists),
-                getValueFromMessageConfig(section, "plugin-description", !isSectionExists),
-                getValueFromMessageConfig(section, "invalid-command", !isSectionExists),
-                getValueFromMessageConfig(section, "player-only-command", !isSectionExists),
-                getValueFromMessageConfig(section, "invalid-arguments", !isSectionExists),
-                getValueFromMessageConfig(section, "must-hold-item", !isSectionExists),
-                getValueFromMessageConfig(section, "item-registered", !isSectionExists),
-                getValueFromMessageConfig(section, "item-already-registered", !isSectionExists),
-                getValueFromMessageConfig(section, "player-not-found", !isSectionExists),
-                getValueFromMessageConfig(section, "item-not-found", !isSectionExists),
-                getValueFromMessageConfig(section, "item-given", !isSectionExists),
-                getValueFromMessageConfig(section, "invalid-amount", !isSectionExists),
-                getValueFromMessageConfig(section, "item-list", !isSectionExists),
-                getValueFromMessageConfig(section, "plugin-reloaded", !isSectionExists),
-                getValueFromMessageConfig(section, "item-unregistered", !isSectionExists),
-                getValueFromMessageConfig(section, "plugin-help", !isSectionExists)
+                getValueFromMessageConfig(fileConfig, "prefix"),
+                getValueFromMessageConfig(section, "no-permission"),
+                getValueFromMessageConfig(section, "plugin-description"),
+                getValueFromMessageConfig(section, "invalid-command"),
+                getValueFromMessageConfig(section, "player-only-command"),
+                getValueFromMessageConfig(section, "invalid-arguments"),
+                getValueFromMessageConfig(section, "must-hold-item"),
+                getValueFromMessageConfig(section, "item-registered"),
+                getValueFromMessageConfig(section, "item-already-registered"),
+                getValueFromMessageConfig(section, "player-not-found"),
+                getValueFromMessageConfig(section, "item-not-found"),
+                getValueFromMessageConfig(section, "item-given"),
+                getValueFromMessageConfig(section, "invalid-amount"),
+                getValueFromMessageConfig(section, "item-list"),
+                getValueFromMessageConfig(section, "plugin-reloaded"),
+                getValueFromMessageConfig(section, "item-unregistered"),
+                getValueFromMessageConfig(section, "plugin-help")
         );
 
-        if (!isSectionExists) {
-            saveMessageFileConfig(file, fileConfig);
-        }
+        saveMessageFileConfig(file, fileConfig);
 
         return config;
     }
 
-    private String getValueFromMessageConfig(ConfigurationSection section, String key, boolean shouldReport) {
+    private String getValueFromMessageConfig(ConfigurationSection section, String key) {
         final String value = section.getString(key);
 
         if (value == null) {
-
-            if (shouldReport) {
-                Logger.getInstance().warn(this, "Failed to parse '%s' in '%s': Value not found. Using default.".formatted(key, MESSAGE_CONFIG_FILE_NAME));
-            }
+            Logger.getInstance().warn(this, "Failed to parse '%s' in '%s': Value not found. Using default.".formatted(key, MESSAGE_CONFIG_FILE_NAME));
 
             final String defValue = MessageConfig.DEFAULT_VALUES.get(key);
 
             section.set(key, defValue);
+
             return defValue;
         }
 

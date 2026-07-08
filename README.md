@@ -1,4 +1,4 @@
-# ItemManager
+# CustomItemManager
 
 A **powerful and centralized** custom ***item management*** plugin.
 

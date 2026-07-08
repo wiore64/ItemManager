@@ -7,8 +7,8 @@ import java.io.File;
 
 public final class GuideWriter {
 
-    private static final String ITEMS_GUIDE_FILE_NAME = "items.md";
-    private static final String PLACEHOLDERS_GUIDE_FILE_NAME = "placeholders.md";
+    private static final String ITEMS_GUIDE_FILE_NAME = "guides/items.md";
+    private static final String PLACEHOLDERS_GUIDE_FILE_NAME = "guides/placeholders.md";
     private static File itemsGuideFile;
     private static File placeholdersGuideFile;
 

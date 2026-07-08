@@ -2,4 +2,7 @@
 # = CustomItemManager | Config = #
 # ============================== #
 
-logging-level: INFO # DEBUG | INFO | WARN | ERROR
+config-version: 1
+
+settings:
+  logging-level: INFO # DEBUG | INFO | WARN | ERROR

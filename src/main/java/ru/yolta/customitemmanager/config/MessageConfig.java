@@ -47,7 +47,7 @@ public record MessageConfig(
         map.put("item-given", "<green>Gave {AMOUNT}x {ITEM} to {PLAYER}.</green>");
 
         map.put("plugin-description", "A <gold>powerful and centralized</gold> custom <aqua>item management</aqua> plugin.");
-        map.put("plugin-help", "List of commands: <gold>\n/customitemmanager add <key>: Adds a new item held in your hand with key serving as identifier\n/customitemmanager remove <key>: Removes the specified item\n/customitemmanager give <player> <key> [amount]: Gives item to player in the specified amount\n/customitemmanager list: Lists all currently registered items\n/customitemmanager reload: Reloads the plugin\n/customitemmanager help: Reveals this message");
+        map.put("plugin-help", "List of commands: <gold>\n/cim add <key>: Adds a new item held in your hand with key serving as identifier\n/cim remove <key>: Removes the specified item\n/cim give <player> <key> [amount]: Gives item to player in the specified amount\n/cim list: Lists all currently registered items\n/cim reload: Reloads the plugin\n/cim help: Reveals this message");
         map.put("item-list", "Registered items: <gold>{ITEMS}</gold>");
         map.put("plugin-reloaded", "<green>Plugin reloaded.</green>");
 
