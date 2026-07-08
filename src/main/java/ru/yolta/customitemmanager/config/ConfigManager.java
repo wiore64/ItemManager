@@ -1,4 +1,4 @@
-package ru.yolta.itemmanager.config;
+package ru.yolta.customitemmanager.config;
 
 import java.io.File;
 
@@ -6,8 +6,8 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.jetbrains.annotations.NotNull;
 
-import ru.yolta.itemmanager.ItemManager;
-import ru.yolta.itemmanager.utils.Logger;
+import ru.yolta.customitemmanager.CustomItemManager;
+import ru.yolta.customitemmanager.utils.Logger;
 
 public final class ConfigManager {
 
@@ -16,7 +16,7 @@ public final class ConfigManager {
     private final GeneralConfig generalConfig;
     private final MessageConfig messageConfig;
 
-    public ConfigManager(@NotNull ItemManager plugin) {
+    public ConfigManager(@NotNull CustomItemManager plugin) {
         Logger.getInstance().debug(this, "Initializing...");
 
         this.generalConfig = parseGeneralConfig(getGeneralFileConfig(plugin));
@@ -25,7 +25,7 @@ public final class ConfigManager {
         Logger.getInstance().debug(this, "Initialized successfully.");
     }
 
-    private FileConfiguration getGeneralFileConfig(ItemManager plugin) {
+    private FileConfiguration getGeneralFileConfig(CustomItemManager plugin) {
         final File configFile = new File(plugin.getDataFolder(), GENERAL_CONFIG_FILE_NAME);
 
         if (!configFile.exists()) {
@@ -36,7 +36,7 @@ public final class ConfigManager {
         return YamlConfiguration.loadConfiguration(configFile);
     }
 
-    private FileConfiguration getMessageFileConfig(ItemManager plugin) {
+    private FileConfiguration getMessageFileConfig(CustomItemManager plugin) {
         final File configFile = new File(plugin.getDataFolder(), MESSAGE_CONFIG_FILE_NAME);
 
         if (!configFile.exists()) {

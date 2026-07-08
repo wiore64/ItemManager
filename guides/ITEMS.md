@@ -1,4 +1,4 @@
-# Configuring a Custom Item | 2026-07-06
+# CustomItemManager | Custom Items Config (2026-07-08)
 
 This guide explains how a **custom item** is defined in ``items.yml``. The only two **required fields** are **material and internal ID**, where the _latter one is handled automatically_.
 
@@ -91,8 +91,9 @@ The item's display name. Optional.
 display-name: <#F55E27><bold>Copper sword</bold></#F55E27>
 ```
 
-Supports MiniMessage formatting. As of now, when item with default name added via a command, ItemManager uses the item's 
-translatable key, making it vary depending on the set language of your client.
+Supports MiniMessage formatting. As of now, when item with default name added via a command, CustomItemManager uses the 
+item's translatable key, making it vary depending on the set language of your client. Though, it does not create a key
+for display name, since it is default.
 
 ---
 
@@ -170,7 +171,7 @@ keys:
   - key
 ```
 
-If namespace is not clarified, ItemManager is used as the namespace instead.
+If namespace is not clarified, CustomItemManager is used as the namespace instead.
 
 ## End
 

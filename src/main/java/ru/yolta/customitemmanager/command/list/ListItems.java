@@ -1,4 +1,4 @@
-package ru.yolta.itemmanager.command.list;
+package ru.yolta.customitemmanager.command.list;
 
 import java.util.List;
 import java.util.Map;
@@ -10,15 +10,15 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import org.jetbrains.annotations.Unmodifiable;
-import ru.yolta.itemmanager.ItemManager;
-import ru.yolta.itemmanager.command.SubCommand;
-import ru.yolta.itemmanager.config.MessageConfig;
-import ru.yolta.itemmanager.utils.Messenger;
+import ru.yolta.customitemmanager.CustomItemManager;
+import ru.yolta.customitemmanager.command.SubCommand;
+import ru.yolta.customitemmanager.config.MessageConfig;
+import ru.yolta.customitemmanager.utils.Messenger;
 
 public final class ListItems implements SubCommand {
 
     private static final Set<String> ALIASES = Set.of("list");
-    private static final Permission PERMISSION = new Permission("itemmanager.command.list");
+    private static final Permission PERMISSION = new Permission("customitemmanager.command.list");
     private final MessageConfig messages;
 
     public ListItems(@NotNull MessageConfig messages) {
@@ -28,11 +28,11 @@ public final class ListItems implements SubCommand {
     @Override
     public void onCommand(@NotNull CommandSender sender, @NotNull String @NotNull [] args) {
         if (args.length != 1) {
-            Messenger.sendMessage(sender, messages.invalidArguments(), Map.of("USAGE", "/itemmanager list"));
+            Messenger.sendMessage(sender, messages.invalidArguments(), Map.of("USAGE", "/cim list"));
             return;
         }
 
-        final Set<String> itemIds = ItemManager.getApi().getAllCustomItemIds();
+        final Set<String> itemIds = CustomItemManager.getApi().getAllCustomItemIds();
 
         if (itemIds.isEmpty()) {
             Messenger.sendMessage(sender, messages.itemList(), Map.of("ITEMS", "No custom items registered."));

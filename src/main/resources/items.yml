@@ -1,10 +1,10 @@
-# ======================= #
-# = ItemManager | Items = #
-# ======================= #
+# ============================= #
+# = CustomItemManager | Items = #
+# ============================= #
 
 # Learn more about:
 # - How to configure a custom item manually:
-#   https://github.com/wiore64/ItemManager/blob/main/guides/ITEMS.md
+#   https://github.com/wiore64/CustomItemManager/blob/main/guides/ITEMS.md
 #
 # Use the Paper Javadocs matching your Minecraft/Paper version.
 # Replace {VERSION} with your server version (e.g. 1.21, 26.2, etc.).

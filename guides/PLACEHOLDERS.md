@@ -1,4 +1,4 @@
-# Placeholders
+# CustomItemManager | Placeholders
 
 The plugin supports a set of placeholders that can be used inside certain messages in the `messages.yml` configuration file.
 

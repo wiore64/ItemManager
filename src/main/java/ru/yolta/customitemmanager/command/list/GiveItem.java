@@ -1,4 +1,4 @@
-package ru.yolta.itemmanager.command.list;
+package ru.yolta.customitemmanager.command.list;
 
 import java.util.List;
 import java.util.Map;
@@ -14,15 +14,15 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import org.jetbrains.annotations.Unmodifiable;
-import ru.yolta.itemmanager.ItemManager;
-import ru.yolta.itemmanager.command.SubCommand;
-import ru.yolta.itemmanager.config.MessageConfig;
-import ru.yolta.itemmanager.utils.Messenger;
+import ru.yolta.customitemmanager.CustomItemManager;
+import ru.yolta.customitemmanager.command.SubCommand;
+import ru.yolta.customitemmanager.config.MessageConfig;
+import ru.yolta.customitemmanager.utils.Messenger;
 
 public final class GiveItem implements SubCommand {
 
     private static final Set<String> ALIASES = Set.of("give");
-    private static final Permission PERMISSION = new Permission("itemmanager.command.give");
+    private static final Permission PERMISSION = new Permission("customitemmanager.command.give");
     private final MessageConfig messages;
 
     public GiveItem(@NotNull MessageConfig messages) {
@@ -32,7 +32,7 @@ public final class GiveItem implements SubCommand {
     @Override
     public void onCommand(@NotNull CommandSender sender, @NotNull String @NotNull [] args) {
         if (args.length < 3 || args.length > 4) {
-            Messenger.sendMessage(sender, messages.invalidArguments(), Map.of("USAGE", "/itemmanager give <player> <name> [amount]"));
+            Messenger.sendMessage(sender, messages.invalidArguments(), Map.of("USAGE", "/cim give <player> <name> [amount]"));
             return;
         }
 
@@ -45,7 +45,7 @@ public final class GiveItem implements SubCommand {
         }
 
         final String itemName = args[2];
-        final Optional<ItemStack> optionalItem = ItemManager.getApi().getCustomItem(itemName);
+        final Optional<ItemStack> optionalItem = CustomItemManager.getApi().getCustomItem(itemName);
 
         if (optionalItem.isEmpty()) {
             Messenger.sendMessage(sender, messages.itemNotFound(), Map.of("ITEM", itemName));
@@ -82,7 +82,7 @@ public final class GiveItem implements SubCommand {
             return null; // Let Bukkit handle player name suggestions
 
         if (args.length == 3)
-            return List.copyOf(ItemManager.getApi().getAllCustomItemIds());
+            return List.copyOf(CustomItemManager.getApi().getAllCustomItemIds());
 
         return List.of();
     }

@@ -1,4 +1,4 @@
-package ru.yolta.itemmanager.command;
+package ru.yolta.customitemmanager.command;
 
 import java.util.Set;
 

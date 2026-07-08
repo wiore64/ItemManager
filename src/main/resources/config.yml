@@ -1,5 +1,5 @@
-# ======================== #
-# = ItemManager | Config = #
-# ======================== #
+# ============================== #
+# = CustomItemManager | Config = #
+# ============================== #
 
 logging-level: INFO # DEBUG | INFO | WARN | ERROR

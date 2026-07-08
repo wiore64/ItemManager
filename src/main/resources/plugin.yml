@@ -1,72 +1,72 @@
-name: ItemManager
+name: CustomItemManager
 api-version: 1.21
 version: ${version}
-main: ru.yolta.itemmanager.ItemManager
+main: ru.yolta.customitemmanager.CustomItemManager
 
-description: A powerful item management plugin.
+description: A powerful and centralized custom item management plugin.
 author: YoLTa
-website: https://github.com/wiore64/ItemManager
+website: https://github.com/wiore64/CustomItemManager
 
 load: POSTWORLD
-prefix: ItemManager
+prefix: CustomItemManager
 
 permissions:
-  itemmanager.*:
-    description: Gives absolute access to all ItemManager commands and features.
+  customitemmanager.*:
+    description: Gives absolute access to all CustomItemManager commands and features.
     default: op
     children:
-      itemmanager.command: true
-      itemmanager.command.add: true
-      itemmanager.command.remove: true
-      itemmanager.command.give: true
-      itemmanager.command.list: true
-      itemmanager.command.reload: true
-      itemmanager.command.help: true
+      customitemmanager.command: true
+      customitemmanager.command.add: true
+      customitemmanager.command.remove: true
+      customitemmanager.command.give: true
+      customitemmanager.command.list: true
+      customitemmanager.command.reload: true
+      customitemmanager.command.help: true
 
-  itemmanager.command:
-    description: Allows the use of the /itemmanager command.
+  customitemmanager.command:
+    description: Allows the use of the /cim command.
     default: op
 
-  itemmanager.command.add:
-    description: Allows the use of the /itemmanager add command.
-    default: op
-    children:
-      itemmanager.command: true
-
-  itemmanager.command.remove:
-    description: Allows the use of the /itemmanager remove command.
+  customitemmanager.command.add:
+    description: Allows the use of the /cim add command.
     default: op
     children:
-      itemmanager.command: true
+      customitemmanager.command: true
 
-  itemmanager.command.give:
-    description: Allows the use of the /itemmanager give command.
+  customitemmanager.command.remove:
+    description: Allows the use of the /cim remove command.
     default: op
     children:
-      itemmanager.command: true
+      customitemmanager.command: true
 
-  itemmanager.command.list:
-    description: Allows the use of the /itemmanager list command.
+  customitemmanager.command.give:
+    description: Allows the use of the /cim give command.
     default: op
     children:
-      itemmanager.command: true
+      customitemmanager.command: true
 
-  itemmanager.command.reload:
-    description: Allows the use of the /itemmanager reload command.
+  customitemmanager.command.list:
+    description: Allows the use of the /cim list command.
     default: op
     children:
-      itemmanager.command: true
+      customitemmanager.command: true
 
-  itemmanager.command.help:
-    description: Allows the use of the /itemmanager help command.
+  customitemmanager.command.reload:
+    description: Allows the use of the /cim reload command.
     default: op
     children:
-      itemmanager.command: true
+      customitemmanager.command: true
+
+  customitemmanager.command.help:
+    description: Allows the use of the /cim help command.
+    default: op
+    children:
+      customitemmanager.command: true
 
 commands:
-  itemmanager:
-    description: The main command for ItemManager.
+  customitemmanager:
+    description: The main command for CustomItemManager.
     usage: /<command> <add|remove|give|list|help|reload>
-    permission: itemmanager.command
+    permission: customitemmanager.command
     permission-message: You do not have permission to use this command.
-    aliases: [im, imanager, itemm]
+    aliases: [cim, cimanager]

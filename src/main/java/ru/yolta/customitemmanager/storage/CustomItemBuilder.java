@@ -1,4 +1,4 @@
-package ru.yolta.itemmanager.storage;
+package ru.yolta.customitemmanager.storage;
 
 import java.time.Duration;
 import java.time.Instant;

@@ -1,4 +1,4 @@
-package ru.yolta.itemmanager.utils;
+package ru.yolta.customitemmanager.utils;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;

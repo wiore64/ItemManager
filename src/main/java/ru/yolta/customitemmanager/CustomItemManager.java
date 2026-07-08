@@ -1,23 +1,23 @@
-package ru.yolta.itemmanager;
+package ru.yolta.customitemmanager;
 
 import org.bukkit.command.PluginCommand;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
-import ru.yolta.itemmanager.api.ItemManagerApi;
-import ru.yolta.itemmanager.command.CommandService;
-import ru.yolta.itemmanager.command.ItemManagerCommand;
-import ru.yolta.itemmanager.config.ConfigManager;
-import ru.yolta.itemmanager.storage.CustomItemBuilder;
-import ru.yolta.itemmanager.storage.CustomItemStorage;
-import ru.yolta.itemmanager.utils.Logger;
-import ru.yolta.itemmanager.utils.UpdateChecker;
+import ru.yolta.customitemmanager.api.ItemManagerApi;
+import ru.yolta.customitemmanager.command.CommandService;
+import ru.yolta.customitemmanager.command.CustomItemManagerCommand;
+import ru.yolta.customitemmanager.config.ConfigManager;
+import ru.yolta.customitemmanager.storage.CustomItemBuilder;
+import ru.yolta.customitemmanager.storage.CustomItemStorage;
+import ru.yolta.customitemmanager.utils.Logger;
+import ru.yolta.customitemmanager.utils.UpdateChecker;
 
-public class ItemManager extends JavaPlugin {
+public class CustomItemManager extends JavaPlugin {
 
     private static final String PLUGIN_FULL_NAME = "CustomItemManager";
     private static final String PLUGIN_SHORT_NAME = "CIM";
-    private static final String MAIN_COMMAND_NAME = "itemmanager";
+    private static final String MAIN_COMMAND_NAME = "customitemmanager";
     private static final String PLUGIN_DOWNLOAD_LINK = "https://hangar.papermc.io/randomlychosenname/ItemManager/versions";
     private static ItemManagerApi api;
     
@@ -37,7 +37,7 @@ public class ItemManager extends JavaPlugin {
         api = new ItemManagerApi(this, itemStorage, itemBuilder);
 
         final CommandService commandService = new CommandService(configManager.getMessageConfig());
-        final ItemManagerCommand commandHandler = new ItemManagerCommand(commandService, configManager.getMessageConfig());
+        final CustomItemManagerCommand commandHandler = new CustomItemManagerCommand(commandService, configManager.getMessageConfig());
 
         final PluginCommand command = this.getCommand(MAIN_COMMAND_NAME);
         if (command == null) throw new IllegalStateException("Command '%s' not found in plugin.yml".formatted(MAIN_COMMAND_NAME));

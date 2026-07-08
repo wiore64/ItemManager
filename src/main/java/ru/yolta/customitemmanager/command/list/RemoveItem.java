@@ -1,4 +1,4 @@
-package ru.yolta.itemmanager.command.list;
+package ru.yolta.customitemmanager.command.list;
 
 import java.util.List;
 import java.util.Map;
@@ -10,15 +10,15 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import org.jetbrains.annotations.Unmodifiable;
-import ru.yolta.itemmanager.ItemManager;
-import ru.yolta.itemmanager.command.SubCommand;
-import ru.yolta.itemmanager.config.MessageConfig;
-import ru.yolta.itemmanager.utils.Messenger;
+import ru.yolta.customitemmanager.CustomItemManager;
+import ru.yolta.customitemmanager.command.SubCommand;
+import ru.yolta.customitemmanager.config.MessageConfig;
+import ru.yolta.customitemmanager.utils.Messenger;
 
 public final class RemoveItem implements SubCommand {
 
     private static final Set<String> ALIASES = Set.of("remove");
-    private static final Permission PERMISSION = new Permission("itemmanager.command.remove");
+    private static final Permission PERMISSION = new Permission("customitemmanager.command.remove");
     private final MessageConfig messages;
 
     public RemoveItem(@NotNull MessageConfig messages) {
@@ -28,13 +28,13 @@ public final class RemoveItem implements SubCommand {
     @Override
     public void onCommand(@NotNull CommandSender sender, @NotNull String @NotNull [] args) {
         if (args.length != 2) {
-            Messenger.sendMessage(sender, messages.invalidArguments(), Map.of("USAGE", "/itemmanager remove <name>"));
+            Messenger.sendMessage(sender, messages.invalidArguments(), Map.of("USAGE", "/cim remove <name>"));
             return;
         }
 
         final String itemName = args[1];
 
-        final boolean success = ItemManager.getApi().unregisterCustomItem(itemName);
+        final boolean success = CustomItemManager.getApi().unregisterCustomItem(itemName);
 
         if (success) {
             Messenger.sendMessage(sender, messages.itemUnregistered(), Map.of("ITEM", itemName));
@@ -45,7 +45,7 @@ public final class RemoveItem implements SubCommand {
 
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull String @NotNull [] args) {
-        if (args.length == 2) return List.copyOf(ItemManager.getApi().getAllCustomItemIds());
+        if (args.length == 2) return List.copyOf(CustomItemManager.getApi().getAllCustomItemIds());
 
         return List.of();
     }

@@ -1,4 +1,4 @@
-package ru.yolta.itemmanager.storage;
+package ru.yolta.customitemmanager.storage;
 
 import com.google.common.collect.Multimap;
 import net.kyori.adventure.text.Component;

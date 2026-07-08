@@ -1,4 +1,4 @@
-package ru.yolta.itemmanager.storage;
+package ru.yolta.customitemmanager.storage;
 
 import java.io.File;
 import java.io.IOException;
@@ -14,23 +14,23 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Unmodifiable;
 
-import ru.yolta.itemmanager.ItemManager;
-import ru.yolta.itemmanager.utils.Logger;
+import ru.yolta.customitemmanager.CustomItemManager;
+import ru.yolta.customitemmanager.utils.Logger;
 
 public final class CustomItemStorage {
 
-    static final NamespacedKey CIM_ITEM_NAMESPACEDKEY = new NamespacedKey(ItemManager.getPrefix().toLowerCase(Locale.ROOT), "item");
+    static final NamespacedKey CIM_ITEM_NAMESPACEDKEY = new NamespacedKey(CustomItemManager.getPrefix().toLowerCase(Locale.ROOT), "item");
     static final String CIM_ITEM_INTERNAL_ID_NAMESPACE = "cim_internal_id";
 
     private static final String FILE_STORAGE_NAME = "items.yml";
-    private final ItemManager plugin;
+    private final CustomItemManager plugin;
     private final File configFile;
     private final Map<String, byte[]> itemRegistry;
     // HIDDEN RELATIONSHIP -- START
     private final AtomicBoolean invalidateBuilderCache;
     // HIDDEN RELATIONSHIP -- END
 
-    public CustomItemStorage(@NotNull ItemManager plugin) {
+    public CustomItemStorage(@NotNull CustomItemManager plugin) {
         Logger.getInstance().debug(this, "Initializing...");
 
         this.plugin = plugin;
@@ -57,7 +57,7 @@ public final class CustomItemStorage {
                 continue;
             }
 
-            final byte[] parsedItemData = CustomItemDeserializer.deserializeItem(ItemManager.getPrefix().toLowerCase(Locale.ROOT), itemId, section);
+            final byte[] parsedItemData = CustomItemDeserializer.deserializeItem(CustomItemManager.getPrefix().toLowerCase(Locale.ROOT), itemId, section);
             if (parsedItemData == null) {
                 Logger.getInstance().warn(this, "Failed to parse '%s'.".formatted(itemId));
                 continue;

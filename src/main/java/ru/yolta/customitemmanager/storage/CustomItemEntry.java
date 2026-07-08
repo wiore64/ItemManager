@@ -1,4 +1,4 @@
-package ru.yolta.itemmanager.storage;
+package ru.yolta.customitemmanager.storage;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

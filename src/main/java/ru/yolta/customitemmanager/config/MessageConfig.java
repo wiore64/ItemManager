@@ -1,4 +1,4 @@
-package ru.yolta.itemmanager.config;
+package ru.yolta.customitemmanager.config;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -30,7 +30,7 @@ public record MessageConfig(
 
         map.put("no-permission", "<red>You do not have permission to run this command!</red>");
         map.put("invalid-arguments", "<red>Invalid arguments.</red> Usage: <gold>{USAGE}</gold>");
-        map.put("invalid-command", "<red>Unknown command.<red> Use <gold>/itemmanager help.</gold>");
+        map.put("invalid-command", "<red>Unknown command.<red> Use <gold>/customitemmanager help.</gold>");
         map.put("player-only-command", "<red>This command can only be used by players.</red>");
 
         map.put("must-hold-item", "<gold>You must be holding an item.</gold>");
@@ -44,7 +44,7 @@ public record MessageConfig(
         map.put("item-given", "<green>Gave {AMOUNT}x {ITEM} to {PLAYER}.</green>");
 
         map.put("plugin-description", "A <gold>powerful and centralized</gold> custom <aqua>item management</aqua> plugin.");
-        map.put("plugin-help", "List of commands: <gold>\n/itemmanager add <key>: Adds a new item held in your hand with key serving as identifier\n/itemmanager remove <key>: Removes the specified item\n/itemmanager give <player> <key> [amount]: Gives item to player in the specified amount\n/itemmanager list: Lists all currently registered items\n/itemmanager reload: Reloads the plugin\n/itemmanager help: Reveals this message");
+        map.put("plugin-help", "List of commands: <gold>\n/customitemmanager add <key>: Adds a new item held in your hand with key serving as identifier\n/customitemmanager remove <key>: Removes the specified item\n/customitemmanager give <player> <key> [amount]: Gives item to player in the specified amount\n/customitemmanager list: Lists all currently registered items\n/customitemmanager reload: Reloads the plugin\n/customitemmanager help: Reveals this message");
         map.put("item-list", "Registered items: <gold>{ITEMS}</gold>");
         map.put("plugin-reloaded", "<green>Plugin reloaded.</green>");
 

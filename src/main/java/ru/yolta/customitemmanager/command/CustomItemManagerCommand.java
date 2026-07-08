@@ -1,4 +1,4 @@
-package ru.yolta.itemmanager.command;
+package ru.yolta.customitemmanager.command;
 
 import java.util.List;
 
@@ -8,16 +8,16 @@ import org.bukkit.command.TabExecutor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import ru.yolta.itemmanager.config.MessageConfig;
-import ru.yolta.itemmanager.utils.Messenger;
+import ru.yolta.customitemmanager.config.MessageConfig;
+import ru.yolta.customitemmanager.utils.Messenger;
 
-public final class ItemManagerCommand implements TabExecutor {
+public final class CustomItemManagerCommand implements TabExecutor {
 
-    private static final String PRIMARY_PERMISSION = "itemmanager.command";
+    private static final String PRIMARY_PERMISSION = "customitemmanager.command";
     private final CommandService service;
     private final MessageConfig messages;
 
-    public ItemManagerCommand(@NotNull CommandService service, @NotNull MessageConfig messages) {
+    public CustomItemManagerCommand(@NotNull CommandService service, @NotNull MessageConfig messages) {
         this.service = service;
         this.messages = messages;
     }

@@ -1,4 +1,4 @@
-package ru.yolta.itemmanager.storage;
+package ru.yolta.customitemmanager.storage;
 
 import io.papermc.paper.registry.RegistryAccess;
 import io.papermc.paper.registry.RegistryKey;
@@ -17,7 +17,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
-import ru.yolta.itemmanager.utils.Logger;
+import ru.yolta.customitemmanager.utils.Logger;
 
 import java.util.*;
 

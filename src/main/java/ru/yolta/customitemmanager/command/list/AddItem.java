@@ -1,4 +1,4 @@
-package ru.yolta.itemmanager.command.list;
+package ru.yolta.customitemmanager.command.list;
 
 import java.util.List;
 import java.util.Map;
@@ -12,15 +12,15 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import org.jetbrains.annotations.Unmodifiable;
-import ru.yolta.itemmanager.ItemManager;
-import ru.yolta.itemmanager.command.SubCommand;
-import ru.yolta.itemmanager.config.MessageConfig;
-import ru.yolta.itemmanager.utils.Messenger;
+import ru.yolta.customitemmanager.CustomItemManager;
+import ru.yolta.customitemmanager.command.SubCommand;
+import ru.yolta.customitemmanager.config.MessageConfig;
+import ru.yolta.customitemmanager.utils.Messenger;
 
 public final class AddItem implements SubCommand {
 
     private static final Set<String> ALIASES = Set.of("add");
-    private static final Permission PERMISSION = new Permission("itemmanager.command.add");
+    private static final Permission PERMISSION = new Permission("customitemmanager.command.add");
     private final MessageConfig messages;
 
     public AddItem(@NotNull MessageConfig messages) {
@@ -35,7 +35,7 @@ public final class AddItem implements SubCommand {
         }
         
         if (args.length != 2) {
-            Messenger.sendMessage(sender, messages.invalidArguments(), Map.of("USAGE", "/itemmanager add <name>"));
+            Messenger.sendMessage(sender, messages.invalidArguments(), Map.of("USAGE", "/cim add <name>"));
             return;
         }
 
@@ -48,7 +48,7 @@ public final class AddItem implements SubCommand {
 
         final String itemName = args[1];
 
-        final boolean success = ItemManager.getApi().registerCustomItem(itemName, item);
+        final boolean success = CustomItemManager.getApi().registerCustomItem(itemName, item);
 
         if (success) {
             Messenger.sendMessage(sender, messages.itemRegistered(), Map.of("ITEM", itemName));
