@@ -11,6 +11,7 @@ import ru.yolta.customitemmanager.config.ConfigManager;
 import ru.yolta.customitemmanager.storage.CustomItemBuilder;
 import ru.yolta.customitemmanager.storage.CustomItemStorage;
 import ru.yolta.customitemmanager.utils.Logger;
+import ru.yolta.customitemmanager.utils.Messenger;
 import ru.yolta.customitemmanager.utils.UpdateChecker;
 
 public class CustomItemManager extends JavaPlugin {
@@ -30,6 +31,7 @@ public class CustomItemManager extends JavaPlugin {
         final ConfigManager configManager = new ConfigManager(this);
 
         Logger.getInstance().setLevel(configManager.getGeneralConfig().loggingLevel());
+        Messenger.setPrefix(configManager.getMessageConfig().prefix());
 
         final CustomItemStorage itemStorage = new CustomItemStorage(this);
         final CustomItemBuilder itemBuilder = new CustomItemBuilder(itemStorage);
@@ -62,6 +64,8 @@ public class CustomItemManager extends JavaPlugin {
     @Override
     public void onDisable() {
         Logger.getInstance().info(this, "Shutting down...");
+
+        Messenger.setPrefix(null);
 
         api = null;
 

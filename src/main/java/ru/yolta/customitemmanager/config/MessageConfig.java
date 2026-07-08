@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public record MessageConfig(
+    @NotNull String prefix,
     @NotNull String noPermission,
     @NotNull String pluginDescription,
     @NotNull String invalidCommand,
@@ -23,10 +24,12 @@ public record MessageConfig(
     @NotNull String itemUnregistered,
     @NotNull String pluginHelp
 ) {
-    static final Map<String, String> DEFAULT_MESSAGES;
+    static final Map<String, String> DEFAULT_VALUES;
 
     static {
         final Map<String, String> map = new HashMap<>();
+
+        map.put("prefix", "<gradient:#F47854:#B67E54>[CIM]:</gradient>");
 
         map.put("no-permission", "<red>You do not have permission to run this command!</red>");
         map.put("invalid-arguments", "<red>Invalid arguments.</red> Usage: <gold>{USAGE}</gold>");
@@ -48,6 +51,6 @@ public record MessageConfig(
         map.put("item-list", "Registered items: <gold>{ITEMS}</gold>");
         map.put("plugin-reloaded", "<green>Plugin reloaded.</green>");
 
-        DEFAULT_MESSAGES = Map.copyOf(map);
+        DEFAULT_VALUES = Map.copyOf(map);
     }
 }

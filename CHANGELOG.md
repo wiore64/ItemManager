@@ -7,9 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.2.0] - 2026-07-08
 
+### Added
+
+- Now the manager has a prefix it uses in its messages.
+- Now the message config allows you to set a custom prefix.
+
 ### Changed
 
 - From now on, ItemManager is to be named CustomItemManager to provide more clarity on the plugin's functionality.
+- Updated the structure of the message config.
 
 ## [1.1.1] - 2026-07-06
 

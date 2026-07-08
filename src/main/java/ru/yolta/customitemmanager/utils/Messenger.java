@@ -6,9 +6,12 @@ import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 
 import net.kyori.adventure.text.minimessage.MiniMessage;
+import org.jetbrains.annotations.Nullable;
 
 public final class Messenger {
-    private static final MiniMessage MINI_MESSAGE_PARSER = MiniMessage.miniMessage();
+
+    private static final MiniMessage MINI_MESSAGE = MiniMessage.miniMessage();
+    private static String prefix;
 
     private Messenger() {}
 
@@ -21,6 +24,13 @@ public final class Messenger {
             message = message.replace("{" + entry.getKey() + "}", entry.getValue());
         }
 
-        sender.sendMessage(MINI_MESSAGE_PARSER.deserialize(message));
+        if (prefix == null)
+            sender.sendMessage(MINI_MESSAGE.deserialize(message));
+        else
+            sender.sendMessage(MINI_MESSAGE.deserialize(prefix + " " + message));
+    }
+
+    public static void setPrefix(@Nullable String prefix) {
+        Messenger.prefix = prefix;
     }
 }

@@ -5,22 +5,25 @@
 # Learn more about formatting using MiniMessage: https://docs.papermc.io/adventure/minimessage/format/
 # Don't know the supported placeholders? Check here: https://github.com/wiore64/CustomItemManager/blob/main/guides/PLACEHOLDERS.md
 
-no-permission: "<red>You do not have permission to run this command!</red>"
-invalid-arguments: "<red>Invalid arguments.</red> Usage: <gold>{USAGE}</gold>" # Placeholders: {USAGE}
-invalid-command: "<red>Unknown command.<red> Use <gold>/customitemmanager help.</gold>"
-player-only-command: "<red>This command can only be used by players.</red>"
+prefix: "<gradient:#F47854:#B67E54>[CIM]:</gradient>"
 
-must-hold-item: "<gold>You must be holding an item.</gold>"
-item-already-registered: "<gold>Item {ITEM} is already registered.</gold>"         # Placeholders: {ITEM}
-item-not-found: "<gold>Item {ITEM} was not found.</gold>"                          # Placeholders: {ITEM}
-player-not-found: "<gold>Player {PLAYER} was not found.</gold>"                    # Placeholders: {PLAYER}
-invalid-amount: "<gold>Invalid amount {AMOUNT}. Must be a positive integer.</gold" # Placeholders: {AMOUNT}
+messages:
+  no-permission: "<red>You do not have permission to run this command!</red>"
+  invalid-arguments: "<red>Invalid arguments.</red> Usage: <gold>{USAGE}</gold>" # Placeholders: {USAGE}
+  invalid-command: "<red>Unknown command.<red> Use <gold>/customitemmanager help.</gold>"
+  player-only-command: "<red>This command can only be used by players.</red>"
 
-item-registered: "<green>Item {ITEM} registered.</green>"       # Placeholders: {ITEM}
-item-unregistered: "<green>Item {ITEM} unregistered.</green>"   # Placeholders: {ITEM}
-item-given: "<green>Gave {AMOUNT}x {ITEM} to {PLAYER}.</green>" # Placeholders: {AMOUNT}, {ITEM}, {PLAYER}
+  must-hold-item: "<gold>You must be holding an item.</gold>"
+  item-already-registered: "<gold>Item {ITEM} is already registered.</gold>"         # Placeholders: {ITEM}
+  item-not-found: "<gold>Item {ITEM} was not found.</gold>"                          # Placeholders: {ITEM}
+  player-not-found: "<gold>Player {PLAYER} was not found.</gold>"                    # Placeholders: {PLAYER}
+  invalid-amount: "<gold>Invalid amount {AMOUNT}. Must be a positive integer.</gold" # Placeholders: {AMOUNT}
 
-plugin-description: "A <gold>powerful and centralized</gold> custom <aqua>item management</aqua> plugin."
-plugin-help: "List of commands: <gold>\n/cim add <key>: Adds a new item held in your hand with key serving as identifier\n/cim remove <key>: Removes the specified item\n/cim give <player> <key> [amount]: Gives item to player in the specified amount\n/cim list: Lists all currently registered items\n/cim reload: Reloads the plugin\n/cim help: Reveals this message"
-item-list: "Registered items: <gold>{ITEMS}</gold>" # Placeholders: {ITEMS}
-plugin-reloaded: "<green>Plugin reloaded.</green>"
+  item-registered: "<green>Item {ITEM} registered.</green>"       # Placeholders: {ITEM}
+  item-unregistered: "<green>Item {ITEM} unregistered.</green>"   # Placeholders: {ITEM}
+  item-given: "<green>Gave {AMOUNT}x {ITEM} to {PLAYER}.</green>" # Placeholders: {AMOUNT}, {ITEM}, {PLAYER}
+
+  plugin-description: "A <gold>powerful and centralized</gold> custom <aqua>item management</aqua> plugin."
+  plugin-help: "List of commands: <gold>\n/cim add <key>: Adds a new item held in your hand with key serving as identifier\n/cim remove <key>: Removes the specified item\n/cim give <player> <key> [amount]: Gives item to player in the specified amount\n/cim list: Lists all currently registered items\n/cim reload: Reloads the plugin\n/cim help: Reveals this message"
+  item-list: "Registered items: <gold>{ITEMS}</gold>" # Placeholders: {ITEMS}
+  plugin-reloaded: "<green>Plugin reloaded.</green>"
