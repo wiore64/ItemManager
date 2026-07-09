@@ -19,14 +19,10 @@ public class CustomItemManager extends JavaPlugin {
 
     public static final String PLUGIN_NAME = "CustomItemManager";
     public static final String PLUGIN_PREFIX = "CIM";
-    private static final String MAIN_COMMAND_NAME = "customitemmanager";
-    private static final String PLUGIN_DOWNLOAD_LINK = "https://hangar.papermc.io/randomlychosenname/CustomItemManager/versions";
     private static CustomItemManagerApi api;
     
     @Override
     public void onEnable() {
-        Logger.init(this.getComponentLogger());
-
         Logger.getInstance().info(this, "Loading up...");
 
         final ConfigManager configManager = new ConfigManager(this);
@@ -42,21 +38,27 @@ public class CustomItemManager extends JavaPlugin {
         final CommandService commandService = new CommandService(configManager.getMessageConfig());
         final CustomItemManagerCommand commandHandler = new CustomItemManagerCommand(commandService, configManager.getMessageConfig());
 
-        final PluginCommand command = this.getCommand(MAIN_COMMAND_NAME);
-        if (command == null) throw new IllegalStateException("Command '%s' not found in plugin.yml".formatted(MAIN_COMMAND_NAME));
+        final PluginCommand command = this.getCommand("customitemmanager");
+        if (command == null) throw new IllegalStateException("Command '%s' not found in plugin.yml".formatted("customitemmanager"));
 
         command.setExecutor(commandHandler);
         command.setTabCompleter(commandHandler);
 
         GuideWriter.ensureGuidesExist(this);
 
-        if (UpdateChecker.isUpToDate(this.getPluginMeta().getVersion())) {
-            Logger.getInstance().info(this, "You're up to date!");
-        } else {
-            Logger.getInstance().warn(this, "A new version is available. Download it from here: %s".formatted(PLUGIN_DOWNLOAD_LINK));
-        }
+        checkUpdates();
 
         Logger.getInstance().info(this, "Loaded successfully.");
+    }
+
+    private void checkUpdates() {
+        final UpdateChecker.UpdateCheckResult result = UpdateChecker.checkUpdates(getPluginMeta().getVersion());
+        if (!result.hasUpdate()) {
+            // log all good
+            return;
+        }
+
+        // Say you are not up-to-date.
     }
 
     public void onReload() {
