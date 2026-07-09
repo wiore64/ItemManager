@@ -5,7 +5,7 @@ main: ru.yolta.customitemmanager.CustomItemManager
 
 description: A powerful and centralized custom item management plugin.
 author: YoLTa
-website: https://github.com/wiore64/CustomItemManager
+website: https://hangar.papermc.io/randomlychosenname/CustomItemManager
 
 load: POSTWORLD
 prefix: CustomItemManager
