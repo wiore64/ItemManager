@@ -71,7 +71,7 @@ public class CustomItemManager extends JavaPlugin {
     public void onDisable() {
         Logger.info(this, "Shutting down...");
 
-        Messenger.setPrefix(null);
+        Messenger.setPrefix("");
 
         api = null;
 

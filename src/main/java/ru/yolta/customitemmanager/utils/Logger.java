@@ -16,7 +16,7 @@ public final class Logger {
     private Logger() {}
 
     public static void setLevel(@NotNull Level level) {
-        minLevel = level;
+        Logger.minLevel = level;
     }
     
     public static void debug(Object origin, @NotNull String message, @NotNull Object @NotNull ... args) {
