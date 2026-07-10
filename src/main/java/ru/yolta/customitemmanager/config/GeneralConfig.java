@@ -12,22 +12,23 @@ import java.util.Locale;
 public record GeneralConfig(@NotNull Level loggingLevel) {
     private static boolean shouldSaveConfig = false;
 
-    static @NotNull GeneralConfig parseGeneralConfig(@NotNull ConfigManager manager, @NotNull File file, @NotNull FileConfiguration fileConfig) {
+    static @NotNull GeneralConfig parseGeneralConfig(@NotNull ConfigProvider manager, @NotNull File file, @NotNull FileConfiguration fileConfig) {
         final int configVersion = fileConfig.getInt("config-version", -1);
 
         if (configVersion == -1) {
             Logger.info(GeneralConfig.class, "Your config has been updated to include 'config-version'.");
 
+            shouldSaveConfig = true;
             fileConfig.set("config-version", 1);
         }
 
-        final ConfigurationSection section = fileConfig.getConfigurationSection("settings");
+        ConfigurationSection section = fileConfig.getConfigurationSection("settings");
 
         if (section == null) {
             Logger.warn(GeneralConfig.class, "Failed to parse section 'settings': Not found.");
 
             shouldSaveConfig = true;
-            fileConfig.createSection("settings");
+            section = fileConfig.createSection("settings");
         }
 
         final String loggingLevelName = getValue(section, "logging-level", "INFO").replace(" ", "").toUpperCase(Locale.ROOT);

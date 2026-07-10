@@ -126,7 +126,7 @@ public final class UpdateChecker {
             try {
                 return Integer.parseInt(s);
             } catch (NumberFormatException e) {
-                Logger.error(LOG_NAME, "Failed to parse {} to identifier.", s, e);
+                Logger.error(LOG_NAME, "Failed to parse '{}' to identifier.", s, e);
                 return -1;
             }
         }

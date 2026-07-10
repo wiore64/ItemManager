@@ -11,12 +11,12 @@ public final class Logger {
 
     private static final ComponentLogger logger = ComponentLogger.logger(CustomItemManager.PLUGIN_NAME);
     private static final MiniMessage MINI_MESSAGE = MiniMessage.miniMessage();
-    private static Level minLevel = Level.ALL;
+    private static Level minLevel = Level.INFO;
 
     private Logger() {}
 
     public static void setLevel(@NotNull Level level) {
-        Logger.minLevel = level;
+        minLevel = level;
     }
     
     public static void debug(Object origin, @NotNull String message, @NotNull Object @NotNull ... args) {
@@ -31,8 +31,29 @@ public final class Logger {
         log(Level.WARN, origin, message, args);
     }
 
+    public static void warn(Object origin, @NotNull String message, @NotNull Throwable throwable) {
+        log(Level.WARN, origin, message, throwable);
+    }
+
     public static void error(Object origin, @NotNull String message, @NotNull Object @NotNull ... args) {
         log(Level.ERROR, origin, message, args);
+    }
+
+    public static void error(Object origin, @NotNull String message, @NotNull Throwable throwable) {
+        log(Level.ERROR, origin, message, throwable);
+    }
+
+    private static void log(Level level, Object origin, String message, Throwable throwable) {
+        if (level.intLevel() > minLevel.intLevel()) return;
+
+        final String originName = getOriginName(origin);
+        final Component formattedMessage = MINI_MESSAGE.deserialize("[" + originName + "]" + " - " + message);
+
+        switch (level.intLevel()) {
+            case 200 -> logger.error(formattedMessage, throwable);
+            case 300 -> logger.warn(formattedMessage, throwable);
+            default -> throw new IllegalArgumentException("Invalid log level with throwable: " + level);
+        }
     }
 
     private static void log(Level level, Object origin, String message, Object... args) {
@@ -46,7 +67,7 @@ public final class Logger {
             case 300 -> logger.warn(formattedMessage, args);
             case 400 -> logger.info(formattedMessage, args);
             case 500 -> logger.info(formattedMessage, args); // we use info, since debugging is very painful to configure
-            default -> throw new IllegalArgumentException("Invalid logging level: " + level);
+            default -> throw new IllegalArgumentException("Invalid log level: " + level);
         }
     }
 

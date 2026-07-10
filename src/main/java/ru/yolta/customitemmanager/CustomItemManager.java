@@ -8,7 +8,7 @@ import org.jetbrains.annotations.NotNull;
 import ru.yolta.customitemmanager.api.CustomItemManagerApi;
 import ru.yolta.customitemmanager.command.CommandService;
 import ru.yolta.customitemmanager.command.CustomItemManagerCommand;
-import ru.yolta.customitemmanager.config.ConfigManager;
+import ru.yolta.customitemmanager.config.ConfigProvider;
 import ru.yolta.customitemmanager.storage.CustomItemBuilder;
 import ru.yolta.customitemmanager.storage.CustomItemStorage;
 import ru.yolta.customitemmanager.utils.GuideWriter;
@@ -26,18 +26,18 @@ public class CustomItemManager extends JavaPlugin {
     public void onEnable() {
         Logger.info(this, "Loading up...");
 
-        final ConfigManager configManager = new ConfigManager(this);
+        final ConfigProvider configProvider = new ConfigProvider(this);
 
-        Logger.setLevel(configManager.getGeneralConfig().loggingLevel());
-        Messenger.setPrefix(configManager.getMessageConfig().prefix());
+        Logger.setLevel(configProvider.getGeneralConfig().loggingLevel());
+        Messenger.setPrefix(configProvider.getMessageConfig().prefix());
 
         final CustomItemStorage itemStorage = new CustomItemStorage(this);
         final CustomItemBuilder itemBuilder = new CustomItemBuilder(itemStorage);
 
         api = new CustomItemManagerApi(this, itemStorage, itemBuilder);
 
-        final CommandService commandService = new CommandService(configManager.getMessageConfig());
-        final CustomItemManagerCommand commandHandler = new CustomItemManagerCommand(commandService, configManager.getMessageConfig());
+        final CommandService commandService = new CommandService(configProvider.getMessageConfig());
+        final CustomItemManagerCommand commandHandler = new CustomItemManagerCommand(commandService, configProvider.getMessageConfig());
 
         final PluginCommand command = this.getCommand("customitemmanager");
         if (command == null) throw new IllegalStateException("Command '%s' not found in plugin.yml".formatted("customitemmanager"));

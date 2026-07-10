@@ -28,7 +28,6 @@ public record MessageConfig(
     @NotNull String itemUnregistered,
     @NotNull String pluginHelp
 ) {
-
     private static final Map<String, String> DEFAULT_VALUES;
     private static boolean shouldSaveConfig = false;
 
@@ -60,22 +59,23 @@ public record MessageConfig(
         DEFAULT_VALUES = Map.copyOf(map);
     }
 
-    static @NotNull MessageConfig parseMessageConfig(@NotNull ConfigManager manager, @NotNull File file, @NotNull FileConfiguration fileConfig) {
+    static @NotNull MessageConfig parseMessageConfig(@NotNull ConfigProvider manager, @NotNull File file, @NotNull FileConfiguration fileConfig) {
         final int configVersion = fileConfig.getInt("config-version", -1);
 
         if (configVersion == -1) {
             Logger.info(MessageConfig.class, "Your config has been updated to include 'config-version'.");
 
+            shouldSaveConfig = true;
             fileConfig.set("config-version", 1);
         }
 
-        final ConfigurationSection section = fileConfig.getConfigurationSection("messages");
+        ConfigurationSection section = fileConfig.getConfigurationSection("messages");
 
         if (section == null) {
             Logger.warn(MessageConfig.class, "Failed to parse section 'messages': Not found.");
 
             shouldSaveConfig = true;
-            fileConfig.createSection("messages");
+            section = fileConfig.createSection("messages");
         }
 
         final var config = new MessageConfig(
