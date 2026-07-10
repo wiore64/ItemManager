@@ -21,14 +21,24 @@ public final class ConfigProvider {
         Logger.debug(this, "Initializing...");
 
         final File generalConfigFile = new File(plugin.getDataFolder(), GENERAL_CONFIG_FILE_NAME);
-        ensureFileExists(plugin, generalConfigFile);
+        ensureFileExists(plugin, generalConfigFile, false);
         this.generalConfig = GeneralConfig.parseGeneralConfig(this, generalConfigFile, getFileConfig(generalConfigFile));
 
         final File messageConfigFile = new File(plugin.getDataFolder(), MESSAGE_CONFIG_FILE_NAME);
-        ensureFileExists(plugin, messageConfigFile);
+        ensureFileExists(plugin, messageConfigFile, false);
         this.messageConfig = MessageConfig.parseMessageConfig(this, messageConfigFile, getFileConfig(messageConfigFile));
 
+        Guides.overwriteGuides(plugin, this);
+
         Logger.debug(this, "Initialized successfully.");
+    }
+
+    void ensureFileExists(@NotNull CustomItemManager plugin, @NotNull File file, boolean shouldReplace) {
+        if (!file.exists()) {
+            Logger.warn(this, "File '{}' not found. Creating it now.", file.getName());
+
+            plugin.saveResource(file.getName(), shouldReplace);
+        }
     }
 
     void saveConfig(@NotNull File file, @NotNull FileConfiguration fileConfig) {
@@ -41,14 +51,6 @@ public final class ConfigProvider {
 
     private FileConfiguration getFileConfig(File file) {
         return YamlConfiguration.loadConfiguration(file);
-    }
-
-    private void ensureFileExists(CustomItemManager plugin, File file) {
-        if (!file.exists()) {
-            Logger.warn(this, "File '{}' not found. Creating it now.", file.getName());
-
-            plugin.saveResource(file.getName(), false);
-        }
     }
 
     public @NotNull GeneralConfig getGeneralConfig() {
