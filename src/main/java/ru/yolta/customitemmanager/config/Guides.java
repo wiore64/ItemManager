@@ -9,8 +9,8 @@ import java.io.File;
 final class Guides {
 
     private static final String GUIDES_FOLDER_NAME = "guides";
-    private static final String ITEMS_GUIDE_FILE_NAME = "guides/items.md";
-    private static final String PLACEHOLDERS_GUIDE_FILE_NAME = "guides/placeholders.md";
+    private static final String ITEMS_GUIDE_FILE_NAME = GUIDES_FOLDER_NAME + "/items.md";
+    private static final String PLACEHOLDERS_GUIDE_FILE_NAME = GUIDES_FOLDER_NAME + "/placeholders.md";
 
     private Guides() {}
 
@@ -26,10 +26,7 @@ final class Guides {
             }
         }
 
-        final File itemsGuideFile = new File(folder, ITEMS_GUIDE_FILE_NAME);
-        plugin.saveResource(itemsGuideFile.getPath(), true);
-
-        final File placeholdersGuideFile = new File(folder, PLACEHOLDERS_GUIDE_FILE_NAME);
-        plugin.saveResource(placeholdersGuideFile.getPath(), true);
+        plugin.saveResource(ITEMS_GUIDE_FILE_NAME, true);
+        plugin.saveResource(PLACEHOLDERS_GUIDE_FILE_NAME, true);
     }
 }

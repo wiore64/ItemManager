@@ -59,11 +59,11 @@ public class CustomItemManager extends JavaPlugin {
 
         switch (result.type()) {
             case MAJOR -> Logger.info(PLUGIN_NAME,
-                    "You're missing a major update! Your version: {}; Latest version: {}. Download link: {}",
+                    "You're missing a major update! Your version: {}; latest version: {}. Download link: {}",
                     result.currVer(), result.lastVer(), getPluginMeta().getWebsite());
 
             case MINOR -> Logger.info(PLUGIN_NAME,
-                    "You're missing a minor update! Your version: {}; Latest version: {}. Download link: {}",
+                    "You're missing a minor update! Your version: {}; latest version: {}. Download link: {}",
                     result.currVer(), result.lastVer(), getPluginMeta().getWebsite());
 
             case PATCH -> Logger.info(PLUGIN_NAME,

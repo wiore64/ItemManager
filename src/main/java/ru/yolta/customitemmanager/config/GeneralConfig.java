@@ -10,13 +10,15 @@ import java.io.File;
 import java.util.Locale;
 
 public record GeneralConfig(@NotNull Level loggingLevel) {
+
+    private static final String LOG_NAME = "GeneralConfig";
     private static boolean shouldSaveConfig = false;
 
     static @NotNull GeneralConfig parseGeneralConfig(@NotNull ConfigProvider manager, @NotNull File file, @NotNull FileConfiguration fileConfig) {
         final int configVersion = fileConfig.getInt("config-version", -1);
 
         if (configVersion == -1) {
-            Logger.info(GeneralConfig.class, "Your config has been updated to include 'config-version'.");
+            Logger.info(LOG_NAME, "Your config has been updated to include 'config-version'.");
 
             shouldSaveConfig = true;
             fileConfig.set("config-version", 1);
@@ -25,7 +27,7 @@ public record GeneralConfig(@NotNull Level loggingLevel) {
         ConfigurationSection section = fileConfig.getConfigurationSection("settings");
 
         if (section == null) {
-            Logger.warn(GeneralConfig.class, "Failed to parse section 'settings': Not found.");
+            Logger.warn(LOG_NAME, "Failed to parse section 'settings': Not found.");
 
             shouldSaveConfig = true;
             section = fileConfig.createSection("settings");
@@ -48,7 +50,7 @@ public record GeneralConfig(@NotNull Level loggingLevel) {
         final String value = section.getString(key);
 
         if (value == null) {
-            Logger.warn(GeneralConfig.class, "Failed to parse '{}': Not found.", key);
+            Logger.warn(LOG_NAME, "Failed to parse '{}': Not found.", key);
 
             shouldSaveConfig = true;
             section.set(key, defValue);

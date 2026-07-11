@@ -54,7 +54,7 @@ public final class CommandService {
     private void registerSubCommand(Set<String> aliases, SubCommandWrapper wrapper) {
         for (final String alias : aliases) {
             if (subCommandRegistry.containsKey(alias)) {
-                Logger.warn(this, "Failed to add alias '%s': Already registered.".formatted(alias));
+                Logger.warn(this, "Failed to add alias '{}': Already registered.", alias);
                 continue;
             }
 

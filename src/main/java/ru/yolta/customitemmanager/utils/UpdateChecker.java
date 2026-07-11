@@ -71,7 +71,7 @@ public final class UpdateChecker {
         final int tagFirstIndex = release.indexOf("v", tagKeyIndex + "\"tag_name\":".length() + 1) + 1;
         final int tagLastIndex = release.indexOf(",", tagKeyIndex) - 1;
 
-        return SemVer.fromString(release.substring(tagFirstIndex, tagLastIndex).replace(".", ""));
+        return SemVer.fromString(release.substring(tagFirstIndex, tagLastIndex));
     }
 
     private static UpdateCheckResult compareVersions(SemVer currVer, SemVer lastVer) {
@@ -93,7 +93,7 @@ public final class UpdateChecker {
             final String[] splitStrNum = strNum.split("\\.");
 
             if (splitStrNum.length != 3) {
-                Logger.error(LOG_NAME, "Failed to parse {} to SemVer: Invalid format.", Arrays.toString(splitStrNum));
+                Logger.error(LOG_NAME, "Failed to parse '{}' to SemVer: Invalid format.", strNum);
                 return Optional.empty();
             }
 
@@ -106,12 +106,12 @@ public final class UpdateChecker {
 
         private static Optional<SemVer> fromArray(int[] arr) {
             if (arr.length != 3) {
-                Logger.error(LOG_NAME, "Failed to parse {} to SemVer: Invalid format.", Arrays.toString(arr));
+                Logger.error(LOG_NAME, "Failed to parse '{}' to SemVer: Invalid format.", Arrays.toString(arr));
                 return Optional.empty();
             }
 
             if (arr[0] == -1 || arr[1] == -1 || arr[2] == -1) {
-                Logger.error(LOG_NAME, "Failed to parse {} to SemVer: One of identifiers is missing.", Arrays.toString(arr));
+                Logger.error(LOG_NAME, "Failed to parse '{}' to SemVer: One of identifiers is missing.", Arrays.toString(arr));
                 return Optional.empty();
             }
 

@@ -53,7 +53,7 @@ public final class CustomItemStorage {
             
             final ConfigurationSection section = itemConfig.getConfigurationSection(itemId);
             if (section == null) {
-                Logger.warn(this, "Item '%s' is not a config section.", itemId);
+                Logger.warn(this, "Item '{}' is not a config section.", itemId);
                 continue;
             }
 
@@ -63,7 +63,7 @@ public final class CustomItemStorage {
                     section
             );
             if (parsedItemData == null) {
-                Logger.warn(this, "Failed to parse '%s'.", itemId);
+                Logger.warn(this, "Failed to parse '{}'.", itemId);
                 continue;
             }
 
@@ -87,7 +87,7 @@ public final class CustomItemStorage {
 
         final Set<String> sectionToCopyFromKeys = sectionToCopyFrom.getKeys(true);
         if (sectionToCopyFromKeys.isEmpty()) {
-            Logger.warn(this, "Failed to serialize '%s' into section.", itemId);
+            Logger.warn(this, "Failed to serialize '{}' into section.", itemId);
             return false;
         }
 
@@ -136,13 +136,13 @@ public final class CustomItemStorage {
 
             config.save(configFile);
         } catch (IOException e) {
-            Logger.error(this, "Failed to save file configuration to '%s'.", e, FILE_STORAGE_NAME);
+            Logger.error(this, "Failed to save file configuration to '{}'.", FILE_STORAGE_NAME, e);
         }
     }
 
     private void ensureConfigFileExists() {
         if (!configFile.exists()) {
-            Logger.info(this, "'%s' does not exist. A default one will be created.", FILE_STORAGE_NAME);
+            Logger.warn(this, "'{}' does not exist. Creating it now.", FILE_STORAGE_NAME);
             plugin.saveResource(FILE_STORAGE_NAME, false);
         }
     }

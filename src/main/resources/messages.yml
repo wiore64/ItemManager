@@ -12,7 +12,7 @@ prefix: "<gradient:#F47854:#B67E54>[CIM]:</gradient>"
 messages:
   no-permission: "<red>You do not have permission to run this command!</red>"
   invalid-arguments: "<red>Invalid arguments.</red> Usage: <gold>{USAGE}</gold>" # Placeholders: {USAGE}
-  invalid-command: "<red>Unknown command.<red> Use <gold>/customitemmanager help.</gold>"
+  invalid-command: "<red>Unknown command.<red> Use <gold>/cim help.</gold>"
   player-only-command: "<red>This command can only be used by players.</red>"
 
   must-hold-item: "<gold>You must be holding an item.</gold>"

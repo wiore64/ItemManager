@@ -28,6 +28,7 @@ public record MessageConfig(
     @NotNull String itemUnregistered,
     @NotNull String pluginHelp
 ) {
+    private static final String LOG_NAME = "MessageConfig";
     private static final Map<String, String> DEFAULT_VALUES;
     private static boolean shouldSaveConfig = false;
 
@@ -38,7 +39,7 @@ public record MessageConfig(
 
         map.put("no-permission", "<red>You do not have permission to run this command!</red>");
         map.put("invalid-arguments", "<red>Invalid arguments.</red> Usage: <gold>{USAGE}</gold>");
-        map.put("invalid-command", "<red>Unknown command.<red> Use <gold>/customitemmanager help.</gold>");
+        map.put("invalid-command", "<red>Unknown command.<red> Use <gold>/cim help.</gold>");
         map.put("player-only-command", "<red>This command can only be used by players.</red>");
 
         map.put("must-hold-item", "<gold>You must be holding an item.</gold>");
@@ -63,7 +64,7 @@ public record MessageConfig(
         final int configVersion = fileConfig.getInt("config-version", -1);
 
         if (configVersion == -1) {
-            Logger.info(MessageConfig.class, "Your config has been updated to include 'config-version'.");
+            Logger.info(LOG_NAME, "Your config has been updated to include 'config-version'.");
 
             shouldSaveConfig = true;
             fileConfig.set("config-version", 1);
@@ -72,7 +73,7 @@ public record MessageConfig(
         ConfigurationSection section = fileConfig.getConfigurationSection("messages");
 
         if (section == null) {
-            Logger.warn(MessageConfig.class, "Failed to parse section 'messages': Not found.");
+            Logger.warn(LOG_NAME, "Failed to parse section 'messages': Not found.");
 
             shouldSaveConfig = true;
             section = fileConfig.createSection("messages");
@@ -81,21 +82,21 @@ public record MessageConfig(
         final var config = new MessageConfig(
                 getValue(fileConfig, "prefix", DEFAULT_VALUES.get("prefix")),
                 getValue(section, "no-permission", DEFAULT_VALUES.get("no-permission")),
-                getValue(section, "invalid-arguments", DEFAULT_VALUES.get("invalid-arguments")),
+                getValue(section, "plugin-description", DEFAULT_VALUES.get("plugin-description")),
                 getValue(section, "invalid-command", DEFAULT_VALUES.get("invalid-command")),
                 getValue(section, "player-only-command", DEFAULT_VALUES.get("player-only-command")),
+                getValue(section, "invalid-arguments", DEFAULT_VALUES.get("invalid-arguments")),
                 getValue(section, "must-hold-item", DEFAULT_VALUES.get("must-hold-item")),
-                getValue(section, "item-already-registered", DEFAULT_VALUES.get("item-already-registered")),
-                getValue(section, "item-not-found", DEFAULT_VALUES.get("item-not-found")),
-                getValue(section, "player-not-found", DEFAULT_VALUES.get("player-not-found")),
-                getValue(section, "invalid-amount", DEFAULT_VALUES.get("invalid-amount")),
                 getValue(section, "item-registered", DEFAULT_VALUES.get("item-registered")),
-                getValue(section, "item-unregistered", DEFAULT_VALUES.get("item-unregistered")),
+                getValue(section, "item-already-registered", DEFAULT_VALUES.get("item-already-registered")),
+                getValue(section, "player-not-found", DEFAULT_VALUES.get("player-not-found")),
+                getValue(section, "item-not-found", DEFAULT_VALUES.get("item-not-found")),
                 getValue(section, "item-given", DEFAULT_VALUES.get("item-given")),
-                getValue(section, "plugin-description", DEFAULT_VALUES.get("plugin-description")),
-                getValue(section, "plugin-help", DEFAULT_VALUES.get("plugin-help")),
+                getValue(section, "invalid-amount", DEFAULT_VALUES.get("invalid-amount")),
                 getValue(section, "item-list", DEFAULT_VALUES.get("item-list")),
-                getValue(section, "plugin-reloaded", DEFAULT_VALUES.get("plugin-reloaded"))
+                getValue(section, "plugin-reloaded", DEFAULT_VALUES.get("plugin-reloaded")),
+                getValue(section, "item-unregistered", DEFAULT_VALUES.get("item-unregistered")),
+                getValue(section, "plugin-help", DEFAULT_VALUES.get("plugin-help"))
         );
 
         if (shouldSaveConfig) {
@@ -110,7 +111,7 @@ public record MessageConfig(
         final String value = section.getString(key);
 
         if (value == null) {
-            Logger.warn(MessageConfig.class, "Failed to parse '{}': Not found.", key);
+            Logger.warn(LOG_NAME, "Failed to parse '{}': Not found.", key);
 
             shouldSaveConfig = true;
             section.set(key, defValue);

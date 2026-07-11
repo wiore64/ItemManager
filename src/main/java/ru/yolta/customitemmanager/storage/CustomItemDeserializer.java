@@ -23,7 +23,7 @@ import java.util.*;
 
 final class CustomItemDeserializer {
 
-    private static final String LOG_SOURCE = "CustomItemDeserializer";
+    private static final String LOG_NAME = "CustomItemDeserializer";
     private static final MiniMessage MINI_MESSAGE = MiniMessage.miniMessage();
 
     private CustomItemDeserializer() {}
@@ -66,8 +66,8 @@ final class CustomItemDeserializer {
 
     private static Material resolveMaterial(String itemId, String materialName) {
         if (materialName == null) {
-            Logger.warn(LOG_SOURCE,
-                    "Item '%s' missing required field: material".formatted(itemId)
+            Logger.warn(LOG_NAME,
+                    "Item '{}' missing required field: material", itemId
             );
             return null;
         }
@@ -75,8 +75,8 @@ final class CustomItemDeserializer {
         final Material material = Material.matchMaterial(materialName);
 
         if (material == null) {
-            Logger.warn(LOG_SOURCE,
-                    "Item '%s' invalid material: %s".formatted(itemId, materialName)
+            Logger.warn(LOG_NAME,
+                    "Item '{}' invalid material: {}", itemId, materialName
             );
             return null;
         }
@@ -109,7 +109,7 @@ final class CustomItemDeserializer {
             return Integer.parseInt(rawCustomModelDataId.replace(" ", ""));
         } catch (NumberFormatException e) {
             Logger.warn(
-                    LOG_SOURCE, "Item '%s' invalid custom model data ID: %s".formatted(itemId, rawCustomModelDataId)
+                    LOG_NAME, "Item '{}' invalid custom model data ID: {}", itemId, rawCustomModelDataId
             );
             return null;
         }
@@ -123,15 +123,15 @@ final class CustomItemDeserializer {
 
         for (final Object obj : rawEnchantments) {
             if (!(obj instanceof final Map<?, ?> rawEnchantment)) {
-                Logger.warn(LOG_SOURCE,
-                        "Item '%s' invalid enchantment entry (not a map): %s".formatted(itemId, obj)
+                Logger.warn(LOG_NAME,
+                        "Item '{}' invalid enchantment entry (not a map): {}", itemId, obj
                 );
                 continue;
             }
 
             if (!rawEnchantment.containsKey("name") || !rawEnchantment.containsKey("level")) {
-                Logger.warn(LOG_SOURCE,
-                        "Item '%s' enchantment entry missing 'name' or 'level': %s".formatted(itemId, rawEnchantment)
+                Logger.warn(LOG_NAME,
+                        "Item '{}' enchantment entry missing 'name' or 'level': {}", itemId, rawEnchantment
                 );
                 continue;
             }
@@ -142,8 +142,8 @@ final class CustomItemDeserializer {
                     .toLowerCase(Locale.ROOT);
 
             if (!addedEnchantmentKeys.add(rawKey)) {
-                Logger.warn(LOG_SOURCE,
-                        "Item '%s' duplicate enchantment key: %s".formatted(itemId, rawKey)
+                Logger.warn(LOG_NAME,
+                        "Item '{}' duplicate enchantment key: {}", itemId, rawKey
                 );
                 continue;
             }
@@ -151,8 +151,8 @@ final class CustomItemDeserializer {
             final String[] rawKeyParts = rawKey.split(":");
 
             if (rawKeyParts.length < 1 || rawKeyParts.length > 2) {
-                Logger.warn(LOG_SOURCE,
-                        "Item '%s' invalid enchantment namespace format: '%s'".formatted(itemId, rawKey)
+                Logger.warn(LOG_NAME,
+                        "Item '{}' invalid enchantment namespace format: {}", itemId, rawKey
                 );
                 continue;
             }
@@ -166,8 +166,8 @@ final class CustomItemDeserializer {
                     .get(enchantmentKey);
 
             if (enchantment == null) {
-                Logger.warn(LOG_SOURCE,
-                        "Item '%s' enchantment not found: %s".formatted(itemId, rawKey)
+                Logger.warn(LOG_NAME,
+                        "Item '{}' enchantment not found: {}", itemId, rawKey
                 );
                 continue;
             }
@@ -180,15 +180,15 @@ final class CustomItemDeserializer {
             try {
                 level = Integer.parseInt(rawLevel);
             } catch (NumberFormatException e) {
-                Logger.warn(LOG_SOURCE,
-                        "Item '%s' invalid enchantment level '%s' for '%s'".formatted(itemId, rawLevel, rawKey)
+                Logger.warn(LOG_NAME,
+                        "Item '{}' invalid enchantment level '{}' for '{}'", itemId, rawLevel, rawKey
                 );
                 continue;
             }
 
             if (level < 0 || level > 255) {
-                Logger.warn(LOG_SOURCE,
-                        "Item '%s' enchantment level %d for '%s' out of range (0-255). It was clamped.".formatted(itemId, level, rawKey)
+                Logger.warn(LOG_NAME,
+                        "Item '{}' enchantment level %d for '{}' out of range (0-255). It was clamped.", itemId, level, rawKey
                 );
             }
 
@@ -206,15 +206,15 @@ final class CustomItemDeserializer {
 
         for (final Object obj : rawAttributes) {
             if (!(obj instanceof final Map<?, ?> rawAttribute)) {
-                Logger.warn(LOG_SOURCE,
-                        "Item '%s' invalid attribute entry (not a map): %s".formatted(itemId, obj)
+                Logger.warn(LOG_NAME,
+                        "Item '{}' invalid attribute entry (not a map): {}", itemId, obj
                 );
                 continue;
             }
 
             if (!rawAttribute.containsKey("name") || !rawAttribute.containsKey("modifiers")) {
-                Logger.warn(LOG_SOURCE,
-                        "Item '%s' attribute missing 'name' or 'modifiers': %s".formatted(itemId, rawAttribute)
+                Logger.warn(LOG_NAME,
+                        "Item '{}' attribute missing 'name' or 'modifiers': {}", itemId, rawAttribute
                 );
                 continue;
             }
@@ -225,8 +225,8 @@ final class CustomItemDeserializer {
                     .toLowerCase(Locale.ROOT);
 
             if (!addedAttributeKeys.add(rawKey)) {
-                Logger.warn(LOG_SOURCE,
-                        "Item '%s' duplicate attribute: %s".formatted(itemId, rawKey)
+                Logger.warn(LOG_NAME,
+                        "Item '{}' duplicate attribute: {}", itemId, rawKey
                 );
                 continue;
             }
@@ -234,8 +234,8 @@ final class CustomItemDeserializer {
             final String[] rawKeyParts = rawKey.split(":");
 
             if (rawKeyParts.length < 1 || rawKeyParts.length > 2) {
-                Logger.warn(LOG_SOURCE,
-                        "Item '%s' invalid attribute key: %s".formatted(itemId, rawKey)
+                Logger.warn(LOG_NAME,
+                        "Item '{}' invalid attribute key: {}", itemId, rawKey
                 );
                 continue;
             }
@@ -249,8 +249,8 @@ final class CustomItemDeserializer {
                     .get(attributeKey);
 
             if (attribute == null) {
-                Logger.warn(LOG_SOURCE,
-                        "Item '%s' attribute not found: %s".formatted(itemId, rawKey)
+                Logger.warn(LOG_NAME,
+                        "Item '{}' attribute not found: {}", itemId, rawKey
                 );
                 continue;
             }
@@ -258,8 +258,8 @@ final class CustomItemDeserializer {
             final Object supposedRawModifiers = rawAttribute.get("modifiers");
 
             if (!(supposedRawModifiers instanceof final List<?> rawModifiers)) {
-                Logger.warn(LOG_SOURCE,
-                        "Item '%s' attribute '%s' invalid modifiers list: %s".formatted(itemId, rawKey, supposedRawModifiers)
+                Logger.warn(LOG_NAME,
+                        "Item '{}' attribute '{}' invalid modifiers list: {}", itemId, rawKey, supposedRawModifiers
                 );
                 continue;
             }
@@ -269,15 +269,15 @@ final class CustomItemDeserializer {
             for (final Object mObj : rawModifiers) {
 
                 if (!(mObj instanceof final Map<?, ?> rawModifier)) {
-                    Logger.warn(LOG_SOURCE,
-                            "Item '%s' attribute '%s' invalid modifier entry: %s".formatted(itemId, rawKey, mObj)
+                    Logger.warn(LOG_NAME,
+                            "Item '{}' attribute '{}' invalid modifier entry: {}", itemId, rawKey, mObj
                     );
                     continue;
                 }
 
                 if (!rawModifier.containsKey("operation") || !rawModifier.containsKey("amount")) {
-                    Logger.warn(LOG_SOURCE,
-                            "Item '%s' attribute '%s' modifier missing fields: %s".formatted(itemId, rawKey, rawModifier)
+                    Logger.warn(LOG_NAME,
+                            "Item '{}' attribute '{}' modifier missing fields: {}", itemId, rawKey, rawModifier
                     );
                     continue;
                 }
@@ -291,8 +291,8 @@ final class CustomItemDeserializer {
                 try {
                     operation = AttributeModifier.Operation.valueOf(operationName);
                 } catch (IllegalArgumentException e) {
-                    Logger.warn(LOG_SOURCE,
-                            "Item '%s' attribute '%s' invalid operation: %s".formatted(itemId, rawKey, operationName)
+                    Logger.warn(LOG_NAME,
+                            "Item '{}' attribute '{}' invalid operation: {}", itemId, rawKey, operationName
                     );
                     continue;
                 }
@@ -305,8 +305,8 @@ final class CustomItemDeserializer {
                 try {
                     amount = Double.parseDouble(rawAmount);
                 } catch (NumberFormatException e) {
-                    Logger.warn(LOG_SOURCE,
-                            "Item '%s' attribute '%s' invalid amount: %s".formatted(itemId, rawKey, rawAmount)
+                    Logger.warn(LOG_NAME,
+                            "Item '{}' attribute '{}' invalid amount: {}", itemId, rawKey, rawAmount
                     );
                     continue;
                 }
@@ -318,8 +318,8 @@ final class CustomItemDeserializer {
                 final EquipmentSlotGroup slotGroup = EquipmentSlotGroup.getByName(slotName);
 
                 if (slotGroup == null) {
-                    Logger.warn(LOG_SOURCE,
-                            "Item '%s' attribute '%s' invalid slot: %s".formatted(itemId, rawKey, slotName)
+                    Logger.warn(LOG_NAME,
+                            "Item '{}' attribute '{}' invalid slot: {}", itemId, rawKey, slotName
                     );
                     continue;
                 }
@@ -332,8 +332,8 @@ final class CustomItemDeserializer {
             }
 
             if (modifiers.isEmpty()) {
-                Logger.warn(LOG_SOURCE,
-                        "Item '%s' attribute '%s' has no modifiers.".formatted(itemId, attributeKey)
+                Logger.warn(LOG_NAME,
+                        "Item '{}' attribute '{}' has no modifiers.", itemId, attributeKey
                 );
                 continue;
             }
@@ -357,8 +357,8 @@ final class CustomItemDeserializer {
                     .split(":");
 
             if (rawKeyParts.length < 1 || rawKeyParts.length > 2) {
-                Logger.warn(LOG_SOURCE,
-                        "Item '%s' invalid persistent key format (expected namespace:key or key): %s".formatted(itemId, rawKey)
+                Logger.warn(LOG_NAME,
+                        "Item '{}' invalid persistent key format (expected namespace:key or key): {}", itemId, rawKey
                 );
                 continue;
             }
@@ -368,8 +368,8 @@ final class CustomItemDeserializer {
                     : new NamespacedKey(rawKeyParts[0], rawKeyParts[1]);
 
             if (!keys.add(key)) {
-                Logger.warn(LOG_SOURCE,
-                        "Item '%s' duplicate persistent key: %s".formatted(itemId, key.toString())
+                Logger.warn(LOG_NAME,
+                        "Item '{}' duplicate persistent key: {}", itemId, key.toString()
                 );
             }
         }
@@ -385,8 +385,8 @@ final class CustomItemDeserializer {
         final String internalId = itemEntry.getString("internal-id");
 
         if (internalId == null) {
-            Logger.debug(LOG_SOURCE,
-                    "Item '%s' missing internal ID. Generating a new one...".formatted(itemId)
+            Logger.debug(LOG_NAME,
+                    "Item '{}' missing internal ID. Generating a new one...", itemId
             );
 
             final String newInternalId = UUID.randomUUID().toString();
@@ -401,8 +401,8 @@ final class CustomItemDeserializer {
             UUID.fromString(internalId);
             internalKeys.add(new NamespacedKey(CustomItemStorage.CIM_ITEM_INTERNAL_ID_NAMESPACE, internalId));
         } catch (IllegalArgumentException e) {
-            Logger.warn(LOG_SOURCE,
-                    "Item '%s' invalid internal key. Generating a new one...".formatted(itemId)
+            Logger.warn(LOG_NAME,
+                    "Item '{}' invalid internal key. Generating a new one...", itemId
             );
 
             final String newInternalId = UUID.randomUUID().toString();

@@ -36,8 +36,12 @@ public final class ConfigProvider {
     void ensureFileExists(@NotNull CustomItemManager plugin, @NotNull File file, boolean shouldReplace) {
         if (!file.exists()) {
             Logger.warn(this, "File '{}' not found. Creating it now.", file.getName());
-
             plugin.saveResource(file.getName(), shouldReplace);
+            return;
+        }
+
+        if (shouldReplace) {
+            plugin.saveResource(file.getName(), true);
         }
     }
 

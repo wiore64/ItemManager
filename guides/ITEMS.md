@@ -22,7 +22,7 @@ Replace ```{VERSION}``` with your server version (_e.g. 1.21, 26.2, etc._).
 ```yaml
 example_item:
   material: DIRT
-  display-name: <brown>Mythic Dirt</brown>
+  display-name: <light_purple>Mythic Dirt</light_purple>
   lore: [ "A crazy story behind it..." ]
 ```
 
