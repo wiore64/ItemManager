@@ -10,6 +10,7 @@ import ru.yolta.customitemmanager.command.CustomItemManagerCommand;
 import ru.yolta.customitemmanager.config.ConfigManager;
 import ru.yolta.customitemmanager.storage.CustomItemBuilder;
 import ru.yolta.customitemmanager.storage.CustomItemStorage;
+import ru.yolta.customitemmanager.utils.Future;
 import ru.yolta.customitemmanager.utils.Logger;
 import ru.yolta.customitemmanager.utils.Messenger;
 import ru.yolta.customitemmanager.utils.UpdateChecker;
@@ -25,6 +26,7 @@ public final class CustomItemManager extends JavaPlugin {
 
         final var configManager = new ConfigManager(this);
 
+        Future.setPlugin(this);
         Messenger.setPrefix(configManager.getMessageConfig().prefix());
 
         final var itemStorage = new CustomItemStorage(this);
@@ -87,6 +89,7 @@ public final class CustomItemManager extends JavaPlugin {
         command.setTabCompleter(null);
 
         Messenger.setPrefix("");
+        Future.setPlugin(null);
 
         api = null;
 
