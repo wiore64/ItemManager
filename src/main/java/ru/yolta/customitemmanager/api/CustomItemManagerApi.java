@@ -2,6 +2,7 @@ package ru.yolta.customitemmanager.api;
 
 import java.util.Optional;
 import java.util.Set;
+import java.util.concurrent.CompletableFuture;
 
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
@@ -27,11 +28,11 @@ public final class CustomItemManagerApi {
         plugin.onReload();
     }
 
-    public boolean registerCustomItem(@NotNull String itemId, @NotNull ItemStack item) {
+    public CompletableFuture<Boolean> registerCustomItem(@NotNull String itemId, @NotNull ItemStack item) {
         return itemStorage.registerCustomItem(itemId, item);
     }
 
-    public boolean unregisterCustomItem(@NotNull String itemId) {
+    public CompletableFuture<Boolean> unregisterCustomItem(@NotNull String itemId) {
         return itemStorage.unregisterCustomItem(itemId);
     }
     

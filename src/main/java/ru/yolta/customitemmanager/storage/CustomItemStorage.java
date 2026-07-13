@@ -3,7 +3,7 @@ package ru.yolta.customitemmanager.storage;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.bukkit.NamespacedKey;
@@ -15,6 +15,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Unmodifiable;
 
 import ru.yolta.customitemmanager.CustomItemManager;
+import ru.yolta.customitemmanager.utils.Future;
 import ru.yolta.customitemmanager.utils.Logger;
 
 public final class CustomItemStorage {
@@ -25,32 +26,34 @@ public final class CustomItemStorage {
     private static final String FILE_STORAGE_NAME = "items.yml";
     private final CustomItemManager plugin;
     private final File configFile;
-    private final Map<String, byte[]> itemRegistry;
     // HIDDEN RELATIONSHIP -- START
     private final AtomicBoolean invalidateBuilderCache;
     // HIDDEN RELATIONSHIP -- END
+    private final Object storageLock = new Object();
+    private volatile Map<String, byte[]> itemRegistry = Map.of();
 
     public CustomItemStorage(@NotNull CustomItemManager plugin) {
         Logger.debug(this, "Initializing...");
 
         this.plugin = plugin;
         this.configFile = new File(plugin.getDataFolder(), FILE_STORAGE_NAME);
-        this.itemRegistry = new ConcurrentHashMap<>();
         this.invalidateBuilderCache = new AtomicBoolean();
 
         ensureConfigFileExists();
 
-        refreshItemRegistry(getItemConfig(configFile));
+        synchronized (storageLock) {
+            rebuildItemRegistry(getItemConfig(configFile));
+        }
 
         Logger.debug(this, "Initialized successfully.");
     }
 
-    private void refreshItemRegistry(FileConfiguration itemConfig) {
-        itemRegistry.clear();
-        
+    private void rebuildItemRegistry(FileConfiguration itemConfig) {
+        final Map<String, byte[]> newItemRegistry = new HashMap<>();
+
         final Set<String> itemIds = itemConfig.getKeys(false);
         for (final String itemId : itemIds) {
-            
+
             final ConfigurationSection section = itemConfig.getConfigurationSection(itemId);
             if (section == null) {
                 Logger.warn(this, "Item '{}' is not a config section.", itemId);
@@ -62,61 +65,68 @@ public final class CustomItemStorage {
                     itemId,
                     section
             );
+
             if (parsedItemData == null) {
                 Logger.warn(this, "Failed to parse '{}'.", itemId);
                 continue;
             }
 
-            itemRegistry.put(itemId, parsedItemData);
+            newItemRegistry.put(itemId, parsedItemData);
         }
 
         // Should save it during refresh or handle it differently?
         // In reference to the management of internal IDs
         saveItemConfig(itemConfig);
-
         registryRefreshed();
+
+        itemRegistry = Map.copyOf(newItemRegistry);
     }
 
-    private boolean appendItemToStorage(File file, FileConfiguration itemConfig, String itemId, ItemStack item) {
-        refreshItemRegistry(itemConfig);
+    private CompletableFuture<Boolean> appendItemToStorage(File file, String itemId, ItemStack item) {
+        return Future.runAsyncTask(() -> {
+            synchronized (storageLock) {
+                final FileConfiguration itemConfig = getItemConfig(file);
 
-        if (itemConfig.contains(itemId)) return false;
+                if (itemConfig.contains(itemId)) return false;
 
-        final ConfigurationSection sectionToCopyFrom = itemConfig.createSection(itemId);
-        CustomItemSerializer.serializeItemAndWriteToSection(item, sectionToCopyFrom);
+                final ConfigurationSection sectionToCopyFrom = itemConfig.createSection(itemId);
+                CustomItemSerializer.serializeItemAndWriteToSection(item, sectionToCopyFrom);
 
-        final Set<String> sectionToCopyFromKeys = sectionToCopyFrom.getKeys(true);
-        if (sectionToCopyFromKeys.isEmpty()) {
-            Logger.warn(this, "Failed to serialize '{}' into section.", itemId);
-            return false;
-        }
+                final Set<String> sectionToCopyFromKeys = sectionToCopyFrom.getKeys(true);
+                if (sectionToCopyFromKeys.isEmpty()) {
+                    Logger.warn(this, "Failed to serialize '{}' into section.", itemId);
+                    return false;
+                }
 
-        final ConfigurationSection sectionToCopyTo = itemConfig.createSection(itemId);
+                final ConfigurationSection sectionToCopyTo = itemConfig.createSection(itemId);
 
-        for (final String key : sectionToCopyFromKeys) {
-            final Object value = sectionToCopyFrom.get(key);
-            sectionToCopyTo.set(key, value);
-        }
+                for (final String key : sectionToCopyFromKeys) {
+                    final Object value = sectionToCopyFrom.get(key);
+                    sectionToCopyTo.set(key, value);
+                }
 
-        saveItemConfig(itemConfig);
+                saveItemConfig(itemConfig);
+                rebuildItemRegistry(itemConfig);
 
-        refreshItemRegistry(itemConfig);
-
-        return true;
+                return true;
+            }
+        });
     }
 
-    private boolean removeItemFromStorage(File file, FileConfiguration itemConfig, String itemId) {
-        refreshItemRegistry(itemConfig);
+    private CompletableFuture<Boolean> removeItemFromStorage(File file, String itemId) {
+        return Future.runAsyncTask(() -> {
+            synchronized (storageLock) {
+                final FileConfiguration itemConfig = getItemConfig(file);
 
-        if (!itemConfig.contains(itemId)) return false;
-        
-        itemConfig.set(itemId, null);
+                if (!itemConfig.contains(itemId)) return false;
 
-        saveItemConfig(itemConfig);
+                itemConfig.set(itemId, null);
+                saveItemConfig(itemConfig);
 
-        refreshItemRegistry(itemConfig);
-
-        return true;
+                rebuildItemRegistry(itemConfig);
+                return true;
+            }
+        });
     }
 
     private FileConfiguration getItemConfig(File configFile) {
@@ -147,16 +157,16 @@ public final class CustomItemStorage {
         }
     }
 
-    public boolean registerCustomItem(@NotNull String itemId, @NotNull ItemStack item) {
-        if (isCustomItem(itemId)) return false;
+    public CompletableFuture<Boolean> registerCustomItem(@NotNull String itemId, @NotNull ItemStack item) {
+        if (isCustomItem(itemId)) return CompletableFuture.completedFuture(false);
         
-        return appendItemToStorage(configFile, getItemConfig(configFile), itemId, item);
+        return appendItemToStorage(configFile, itemId, item);
     }
 
-    public boolean unregisterCustomItem(@NotNull String itemId) {
-        if (!isCustomItem(itemId)) return false;
+    public CompletableFuture<Boolean> unregisterCustomItem(@NotNull String itemId) {
+        if (!isCustomItem(itemId)) return CompletableFuture.completedFuture(false);
 
-        return removeItemFromStorage(configFile, getItemConfig(configFile), itemId);
+        return removeItemFromStorage(configFile, itemId);
     }
 
     public boolean isCustomItem(@NotNull String itemId) {

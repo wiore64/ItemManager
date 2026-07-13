@@ -17,10 +17,6 @@ public final class Future {
         Future.plugin = plugin;
     }
 
-    public static <T> void runTask(@NotNull CompletableFuture<T> task, @NotNull Consumer<T> callback) {
-        task.thenAcceptAsync(callback, runnable -> Bukkit.getScheduler().runTask(plugin, runnable));
-    }
-
     public static <T> CompletableFuture<T> runAsyncTask(Supplier<T> task) {
         final CompletableFuture<T> future = new CompletableFuture<>();
 
@@ -35,19 +31,14 @@ public final class Future {
         return future;
     }
 
-    public static <T> CompletableFuture<T> runPartiallyAsyncTask(Consumer<T> syncTask, Supplier<T> asyncTask) {
-        final CompletableFuture<T> future = new CompletableFuture<>();
-
+    public static <T> void runAsyncTask(Supplier<CompletableFuture<T>> asyncTask, Consumer<T> callback) {
         Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
             try {
-                final T result = asyncTask.get();
-                future.complete(result);
-                Bukkit.getScheduler().runTask(plugin, () -> syncTask.accept(result));
+                final T result = asyncTask.get().join();
+                Bukkit.getScheduler().runTask(plugin, () -> callback.accept(result));
             } catch (Throwable t) {
-                future.completeExceptionally(t);
+                Logger.error(Future.class, "Failed to execute task.", t);
             }
         });
-
-        return future;
     }
 }

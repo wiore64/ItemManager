@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.permissions.Permission;
 import org.jetbrains.annotations.NotNull;
@@ -13,6 +14,7 @@ import org.jetbrains.annotations.Unmodifiable;
 import ru.yolta.customitemmanager.CustomItemManager;
 import ru.yolta.customitemmanager.command.SubCommand;
 import ru.yolta.customitemmanager.config.MessageConfig;
+import ru.yolta.customitemmanager.utils.Future;
 import ru.yolta.customitemmanager.utils.Messenger;
 
 public final class RemoveItem implements SubCommand {
@@ -34,13 +36,13 @@ public final class RemoveItem implements SubCommand {
 
         final String itemName = args[1];
 
-        final boolean success = CustomItemManager.getApi().unregisterCustomItem(itemName);
-
-        if (success) {
-            Messenger.sendMessage(sender, messages.itemUnregistered(), Map.of("ITEM", itemName));
-        } else {
-            Messenger.sendMessage(sender, messages.itemNotFound(), Map.of("ITEM", itemName));
-        }
+        Future.runAsyncTask(() -> CustomItemManager.getApi().unregisterCustomItem(itemName), success -> {
+            if (success) {
+                Messenger.sendMessage(sender, messages.itemUnregistered(), Map.of("ITEM", itemName));
+            } else {
+                Messenger.sendMessage(sender, messages.itemNotFound(), Map.of("ITEM", itemName));
+            }
+        });
     }
 
     @Override
