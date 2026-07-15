@@ -17,7 +17,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Removed
 
-- No more log level option in the general config.
+- No more general config since log level option is decided to be removed.
 
 ## [1.1.3] - 2026-07-11
 
