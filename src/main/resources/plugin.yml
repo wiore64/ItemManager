@@ -5,7 +5,7 @@ main: ru.yolta.customitemmanager.CustomItemManager
 
 description: A powerful and centralized custom item management plugin.
 author: YoLTa
-website: https://hangar.papermc.io/randomlychosenname/CustomItemManager
+website: https://hangar.papermc.io/YoLTa/CustomItemManager
 
 load: POSTWORLD
 prefix: CustomItemManager
@@ -19,9 +19,9 @@ permissions:
       customitemmanager.command.add: true
       customitemmanager.command.remove: true
       customitemmanager.command.give: true
-      customitemmanager.command.list: true
       customitemmanager.command.reload: true
       customitemmanager.command.help: true
+      customitemmanager.command.item: true
 
   customitemmanager.command:
     description: Allows the use of the /cim command.
@@ -45,12 +45,6 @@ permissions:
     children:
       customitemmanager.command: true
 
-  customitemmanager.command.list:
-    description: Allows the use of the /cim list command.
-    default: op
-    children:
-      customitemmanager.command: true
-
   customitemmanager.command.reload:
     description: Allows the use of the /cim reload command.
     default: op
@@ -63,10 +57,16 @@ permissions:
     children:
       customitemmanager.command: true
 
+  customitemmanager.command.item:
+    description: Allows the use of the /cim item command.
+    default: op
+    children:
+      customitemmanager.command: true
+
 commands:
   customitemmanager:
     description: The main command for CustomItemManager.
-    usage: /<command> <add|remove|give|list|help|reload>
+    usage: /<command> <add|remove|item|give|help|reload>
     permission: customitemmanager.command
     permission-message: You do not have permission to use this command.
-    aliases: [cim, cimanager]
+    aliases: [ cim, cimanager ]

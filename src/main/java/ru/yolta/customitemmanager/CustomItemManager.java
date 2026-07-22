@@ -40,7 +40,7 @@ public final class CustomItemManager extends JavaPlugin {
 
         api = new CustomItemManagerApi(this, itemStorage, itemBuilder);
 
-        final var commandService = new CommandService(configManager.getMessageConfig());
+        final var commandService = new CommandService(this, configManager.getMessageConfig());
         final var commandHandler = new CustomItemManagerCommand(commandService, configManager.getMessageConfig().mainCmd());
 
         final PluginCommand command = this.getCommand("customitemmanager");

@@ -2,6 +2,7 @@ package ru.yolta.customitemmanager.command;
 
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
+import ru.yolta.customitemmanager.CustomItemManager;
 import ru.yolta.customitemmanager.command.list.*;
 import ru.yolta.customitemmanager.config.MessageConfig;
 import ru.yolta.customitemmanager.utils.Logger;
@@ -15,17 +16,17 @@ import java.util.concurrent.ConcurrentHashMap;
 public final class CommandService {
     private final Map<String, SubCommandWrapper> subCommandRegistry;
 
-    public CommandService(@NotNull MessageConfig messages) {
+    public CommandService(@NotNull CustomItemManager plugin, @NotNull MessageConfig messages) {
         Logger.debug(this, "Initializing...");
 
         this.subCommandRegistry = new ConcurrentHashMap<>();
 
-        registerSubCommands(messages);
+        registerSubCommands(plugin, messages);
 
         Logger.debug(this, "Initialized successfully.");
     }
 
-    private void registerSubCommands(MessageConfig messages) {
+    private void registerSubCommands(CustomItemManager plugin, MessageConfig messages) {
         final var addWrapper = new SubCommandWrapper(new AddItem(messages.sharedCmd(), messages.addItemCmd()), AddItem.getAliases(), AddItem.getPermission());
         registerSubCommand(addWrapper.aliases(), addWrapper);
 
@@ -40,6 +41,9 @@ public final class CommandService {
 
         final var helpWrapper = new SubCommandWrapper(new PluginHelp(messages.sharedCmd(), messages.helpPluginCmd()), PluginHelp.getAliases(), PluginHelp.getPermission());
         registerSubCommand(helpWrapper.aliases(), helpWrapper);
+
+        final var itemWrapper = new SubCommandWrapper(new ItemCommand(plugin, messages.sharedCmd(), messages.manageItemCmd()), ItemCommand.ALIASES, ItemCommand.PERMISSION);
+        registerSubCommand(itemWrapper.aliases(), itemWrapper);
     }
 
     private void registerSubCommand(Set<String> aliases, SubCommandWrapper wrapper) {
