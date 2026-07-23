@@ -8,7 +8,6 @@ The available placeholders are:
 * **`{ITEM}`** — Displays the item name or identifier.
 * **`{PLAYER}`** — Displays the player's name.
 * **`{AMOUNT}`** — Displays the amount value.
-* **`{ITEMS}`** — Displays a list of all registered items.
 * **`{INDEX}`** — Displays a lore line number.
 * **`{MAX_INDEX}`** — Displays the maximum available lore line number.
 * **`{MODEL}`** — Displays the custom model identifier.
